@@ -2,7 +2,6 @@
 #include <iostream>
 #include <stdexcept>
 #include <stdio.h>
-#include <stdlib.h>
 
 
 DeclarationManager::DeclarationManager()
