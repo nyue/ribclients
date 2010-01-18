@@ -19,3 +19,15 @@ research. Moreover, I wanted to learn more about SWIG and the internals of
 popular scripting languages like Python and Ruby, hence the birth of the
 project.
 
+Copyrights & Trademarks:
+
+The RenderMan Interface Procedures and RIB Protocol are:
+Copyright 1988, 1989, Pixar. All rights reserved. RenderMan is a registered
+trademark of Pixar.
+Pixar's RenderMan Interface Specification document stipulates that you may
+write modeling programs that incorporate the RenderMan procedure calls or that
+output RIB, royalty-free, as long as you include the copyright notice above.
+
+Licensing:
+
+Please read the accompanying license.txt file for more details.
