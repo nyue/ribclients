@@ -294,7 +294,7 @@ void ParameterList::ConvertToRtFloatVector(PyObject* floatArray,
     item = PyList_GetItem(floatArray,i);
     if (item != NULL) {
       if (PyFloat_Check(item)) {
-	RtFloat value = PyFloat_AsDouble(item);
+	RtFloat value = static_cast<RtFloat>(PyFloat_AsDouble(item));
 	floatVector[i] = value;
       } else if (PyInt_Check(item)) {
 	RtInt value = PyLong_AsLong(item);
