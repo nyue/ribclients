@@ -234,7 +234,7 @@ typedef bool RtBoolean;
 #elif defined(SWIGPYTHON)
 
 typedef long RtFilterFunc;
-typedef long RtArchiveCallback;
+typedef void* RtArchiveCallback;
 typedef float RtFloat;
 typedef char* RtToken;
 typedef bool RtBoolean;
