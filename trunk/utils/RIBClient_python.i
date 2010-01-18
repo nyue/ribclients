@@ -8,8 +8,10 @@
   // Python SWIG typemap for RtColor
   ParameterList::RtFloatVector fv;
   g_params.ConvertToRtFloatVector($input,fv);
+#if defined(__GNUC__)
   if (fv.size() != 3)
     throw std::runtime_error("Color must have exactly 3 floating point components, we do not support different color samples yet");
+#endif // (__GNUC__)
   memcpy($1, &(fv[0]), sizeof(RtColor));
 }
 
@@ -18,8 +20,10 @@
   // Python SWIG typemap for RtBound
   ParameterList::RtFloatVector fv;
   g_params.ConvertToRtFloatVector($input,fv);
+#if defined(__GNUC__)
   if (fv.size() != 6)
     throw std::runtime_error("Bounds must have exactly 6 floating point components");
+#endif // (__GNUC__)
   memcpy($1, &(fv[0]), sizeof(RtBound));
 }
 
@@ -28,8 +32,10 @@
   // Python SWIG typemap for RtMatrix
   ParameterList::RtFloatVector fv;
   g_params.ConvertToRtFloatVector($input,fv);
+#if defined(__GNUC__)
   if (fv.size() != 16)
     throw std::runtime_error("Matrix must have exactly 16 floating point components");
+#endif // (__GNUC__)
   memcpy($1, &(fv[0]), sizeof(RtMatrix));
 }
 
@@ -65,8 +71,10 @@
   // Python SWIG typemap for RtPoint
   ParameterList::RtFloatVector fv;
   g_params.ConvertToRtFloatVector($input,fv);
+#if defined(__GNUC__)
   if (fv.size() != 3)
     throw std::runtime_error("Point must have exactly 3 floating point components");
+#endif // (__GNUC__)
   memcpy($1, &(fv[0]), sizeof(RtPoint));
 }
 
