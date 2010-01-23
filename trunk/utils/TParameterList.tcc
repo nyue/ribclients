@@ -39,7 +39,7 @@ template <typename T> void TParameterList<T>::Init(size_t numTVPairs)
 
 template <typename T> void TParameterList<T>::cleanUpRawPointerArray()
 {
-  std::cout << "cleanUpRawPointerArray [START]" << std::endl;
+  // std::cout << "cleanUpRawPointerArray [START]" << std::endl;
   if ( _rawCharPtrArray != 0 )
   {
     for (size_t i = 0 ; i < _numPointers; i++)
@@ -50,7 +50,7 @@ template <typename T> void TParameterList<T>::cleanUpRawPointerArray()
     delete [] _rawCharPtrArray;
   }
   
-  std::cout << "cleanUpRawPointerArray [END]" << std::endl;
+  // std::cout << "cleanUpRawPointerArray [END]" << std::endl;
 }
 
 template <typename T> void TParameterList<T>::Update(size_t index,
