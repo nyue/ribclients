@@ -190,9 +190,6 @@
 %constant const char* IDENTIFIER = "identifier";
 %constant const char* NAME = "name";
 %constant const char* SHADINGGROUP = "shadinggroup";
-%constant const char* SEARCHPATH = "searchpath";
-%constant const char* SHADER = "shader";
-%constant const char* TEXTURE = "texture";
 %constant const char* LINEAR = "linear";
 %constant const char* CUBIC = "cubic";
 %constant const char* QUANTIZE = "quantize";
