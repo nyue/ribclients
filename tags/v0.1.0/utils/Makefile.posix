@@ -1,0 +1,97 @@
+.SUFFIXES: .cpp .obj
+
+OSNAME		= $(shell uname)
+
+include ../../RIBClientMakefileRules.inc
+
+ifeq ($(VERIFY),1)
+  RMAN_DEF += -DVERIFY_RIBCLIENT
+endif
+
+ifeq ($(DEBUG),1)
+  RMAN_DEF += -DDEBUG
+endif
+
+VPATH		= .
+INCLUDES        = -I. $(RMAN_INC)
+LIBRARIES	=
+
+OSNAME		= $(shell uname)
+
+ifneq (,$(findstring CYGWIN_NT,$(OSNAME)))
+  CC		=
+  CXX		= cl.exe
+  LINK		= link.exe -lib
+  LINKFLAG	= 
+  CFLAGS	=
+  CXXFLAGS	= /Zi /EHa /MT $(RMAN_DEF)
+ifneq (,$(findstring 71,$(VCVERSION)))
+  CXXFLAGS += /Wall   # turn on 'all warnings'
+  CXXFLAGS += /wd4702 # turn off 'unreachable code'
+  CXXFLAGS += /wd4100 # turn off 'unreferenced formal parameter'
+  CXXFLAGS += /wd4512 # turn off 'assignment op could not be generated'
+  CXXFLAGS += /wd4511 # turn off 'copy constructor could not be generated'
+  CXXFLAGS += /wd4127 # turn off 'conditional expression is constant'
+  CXXFLAGS += /wd4390 # turn off 'empty controlled statement found' ... it's in sparselib
+  CXXFLAGS += /wd4505 # turn off 'unreferenced local function has been removed'
+  CXXFLAGS += /wd4710 # turn off 'function not inlined'
+  CXXFLAGS += /wd4668 # turn off 'is not defined as a preprocessor macro, replacing with 0'
+  CXXFLAGS += /wd4625 # turn off 'copy ctor could not be generated because base class copy ctor inaccessible'
+  CXXFLAGS += /wd4626 # turn off 'assignment op could not be generated because base class assignment op inaccessible'
+  CXXFLAGS += /wd4820 # turn off '# bytes padding added after member'
+  CXXFLAGS += /wd4619 # turn off 'there is no warning number'
+  CXXFLAGS += /wd4217 # turn off 'member template functions cannot be used for copy-assignment or copy-ctor'
+  CXXFLAGS += /wd4265 # turn off 'class has vfuncs but no virtual dtor'
+  CXXFLAGS += /wd4640 # turn off 'construction of local static object is not thread-safe'
+  CXXFLAGS += /wd4711 # turn off 'selected for automatic inline expansion'
+  CXXFLAGS += /wd4514 # turn off 'unreferenced inline function has been removed'
+  CXXFLAGS += /wd4061 # turn off 'enumerate in switch is not explicitly handled by a case label but do have a default label'
+endif
+  INCLUDES     += $(RMAN_INC)
+#  LIBRARIES	= /libpath:"$(DELIGHT)\lib" 3delight.lib
+  EXT		= lib
+  OEXT		= obj
+  SHAREFLAG	= 
+  LIBOUT	= /OUT:
+else
+  CC		= gcc
+  CXX		= g++
+  LINK		= ar
+  LINKFLAG	= -crv
+  CFLAGS	=
+  CXXFLAGS	= -fPIC $(RMAN_DEF)
+  OEXT		= o
+  LIBOUT	= 
+  LIBPREFIX	= lib
+  INCLUDES     += $(RMAN_INC)
+  EXT		= a
+  ifneq (,$(findstring Linux,$(OSNAME)))
+    SHAREFLAG	= -shared
+  else
+    SHAREFLAG	= -dynamiclib
+  endif
+endif
+
+.cpp.$(OEXT):
+	$(CXX) $(INCLUDES) $(CXXFLAGS) -c $<
+
+SOURCES =                        \
+	DeclarationManager.cpp   \
+	BasisManager.cpp         \
+	FilterFuncManager.cpp    \
+	LightHandleManager.cpp   \
+	ObjectHandleManager.cpp  \
+	ContextHandleManager.cpp \
+	ArchiveHandleManager.cpp \
+	ErrorHandlerManager.cpp
+
+CPP_OBJECTS = $(SOURCES:.cpp=.$(OEXT))
+
+all: libutils.$(EXT)
+
+libutils.$(EXT): $(CPP_OBJECTS)
+	$(LINK) $(LINKFLAG) $(LIBOUT)$@ $(LIBRARIES) $?
+
+clean:
+	$(RM) *~ *.$(OEXT) *.$(EXT) RIBClient.h *.class *.lib
+

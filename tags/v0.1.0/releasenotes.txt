@@ -1,0 +1,33 @@
+			Alternative RIBClients
+			    Version 0.1.0
+			    19 August 2007
+
+		       Tan Meng (Nicholas) Yue
+			yue.nicholas@gmail.com
+
+Introduction:
+
+This software is a collection of RIBClients developed for languages other than
+the original language C.
+
+This software came about because I needed to prototype tools initially in
+Python and found a need to be able to write out compressed and binary RIB.
+
+While there were a number of Python modules writing out RIB files, none were
+writing out binary RIB which was important at the time of my visualization
+research. Moreover, I wanted to learn more about SWIG and the internals of
+popular scripting languages like Python and Ruby, hence the birth of the
+project.
+
+Copyrights & Trademarks:
+
+The RenderMan Interface Procedures and RIB Protocol are:
+Copyright 1988, 1989, Pixar. All rights reserved. RenderMan is a registered
+trademark of Pixar.
+Pixar's RenderMan Interface Specification document stipulates that you may
+write modeling programs that incorporate the RenderMan procedure calls or that
+output RIB, royalty-free, as long as you include the copyright notice above.
+
+Licensing:
+
+Please read the accompanying license.txt file for more details.

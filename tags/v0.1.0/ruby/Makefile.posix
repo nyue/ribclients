@@ -1,0 +1,78 @@
+.SUFFIXES: .cxx .cpp .obj .i
+
+OSNAME		= $(shell uname)
+
+include ../../RIBClientMakefileRules.inc
+
+SWIG			= swig
+VPATH			= .
+
+ifneq (,$(findstring CYGWIN_NT,$(OSNAME)))
+  CC		=
+  CXX		= cl.exe
+  LINK		= link.exe
+  CFLAGS	=
+  CXXFLAGS	= /DWIN32 /D_WIN32 /EHa /MT $(RMAN_DEF)
+  INCLUDES	= /I"..\utils" /I"$(RUBY_INCLUDE)" $(RMAN_INC) /I"$(PSDKHOME)\include"
+  LIBRARIES	= /libpath:"$(PSDKHOME)\lib" /libpath:"..\utils" libutils.lib $(RMAN_LIB) /libpath:"$(RUBY_LIB)" msvcrt-ruby18.lib
+  EXT		= so
+  OEXT		= obj
+  SHAREFLAG	= /DLL
+  LIBOUT	= /OUT:
+  PLATFORM      = WIN32
+else
+  CC		= gcc
+  CXX		= g++
+  LINK		= g++
+  CFLAGS	=
+  CXXFLAGS	= -DDEBUG -ggdb3 $(RMAN_DEF)
+  OEXT		= o
+  LIBOUT	= -o # There is a space after the character 'o', keep it there
+  LIBPREFIX	= 
+  ifneq (,$(findstring Linux,$(OSNAME)))
+    INCLUDES	= -I../utils $(RMAN_INC) -I$(BOOST_INCLUDE) -I$(RUBY_INCLUDE)
+    LIBRARIES	= -L../utils -lutils $(RMAN_LIB)
+    EXT		= so
+    SHAREFLAG	= -shared
+    PLATFORM    = LINUX
+  else
+    INCLUDES	= -I../utils $(RMAN_INC) -I$(BOOST_INCLUDE) \
+	 -I/usr/lib/ruby/1.8/powerpc-darwin8.0
+    LIBRARIES	= -L../utils -lutils $(RMAN_LIB) -lruby # $(RUBY_INCLUDE)/../../../libruby-static.a
+    EXT		= bundle
+    SHAREFLAG	= -bundle
+    PLATFORM    = DARWIN
+  endif
+endif
+
+.cpp.$(OEXT):
+	$(CXX) $(INCLUDES) $(CXXFLAGS) -c $<
+
+SOURCES = 			\
+	RIBClient_wrap.cxx	\
+	ParameterList.cpp
+
+CPP_OBJECTS = $(SOURCES:.cpp=.$(OEXT))
+CXX_OBJECTS = $(SOURCES:.cxx=.$(OEXT))
+
+all: RIBClient_wrap.cxx prib
+
+prib: $(LIBPREFIX)ribclient.$(EXT)
+
+utils:
+	(cd ../utils;make clean all)
+
+RIBClient_wrap.cxx : ../utils/RIBClient.i
+	$(SWIG) -o $@ -c++ -ruby $(RMAN_SWIG_DEF) $<
+
+RIBClient_wrap.$(OEXT) : RIBClient_wrap.cxx
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $<
+
+$(LIBPREFIX)ribclient.$(EXT): RIBClient_wrap.$(OEXT) ParameterList.$(OEXT)
+	$(LINK) $(SHAREFLAG) $? $(LIBRARIES) $(LIBOUT)$@
+
+package: $(LIBPREFIX)ribclient.$(EXT) demoribclient.rb
+	tar -cvf - $? | gzip -9 > rubyribclient_$(PLATFORM)_$(RIBCLIENT).tgz
+
+clean:
+	$(RM) *~ *.$(OEXT) *.$(EXT) *.lib *_wrap.cxx SWIGTYPE* *.rib *.a

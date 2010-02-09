@@ -1,0 +1,49 @@
+// -*- C++ -*-                                                                 
+//                                                                             
+// Procedural Insight 2007                                                     
+// 
+
+#ifndef _VIEWTRANSFORM_H_
+#define _VIEWTRANSFORM_H_
+
+#include <VecMatUtils.h>
+
+/*!
+  Calculate transformation matrix to convert between different 3D applications
+  and coordinate systems.
+  This is a template class because different application uses different
+  floating point representation
+ */
+template <typename T> class ViewTransform {
+  static const PI::VecMatUtils<T> utils; ///< precision and comparison stuff
+public:
+  typedef T value_type; ///< ala STL
+
+  /*!
+    Not sure if I need this but what the heck
+   */
+  ViewTransform();
+
+  /*!
+    Making the destructor virtual just in case.
+   */
+  virtual ~ViewTransform();
+
+  /*!
+    Calculate camera matrix required for transforming a right handed
+    coordinate system to RenderMan left handed coordinate system and
+    generates the required
+    \param eye Eye/camera position
+    \param target Target/aim position
+    \param upVector Which way is pointing up. Don't bother normalizing,
+                    if not already normalized.
+    \param matrix_1 The inverted matrix ready for usage
+   */
+  void FromRHCS(const T eye_[3], const T target_[3], const T upVector_[3],
+		T matrix_1[4][4]);
+
+};
+
+#include "ViewTransform.tcc"
+
+#endif // _VIEWTRANSFORM_H_
