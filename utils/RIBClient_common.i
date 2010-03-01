@@ -1,6 +1,8 @@
 // -*- C++ -*-
 // Procedural Insight 2007 
 
+#define EXTERN
+
 %{
 #if _MSC_VER < 1300
 #pragma warning(disable:4786)
@@ -343,56 +345,56 @@ typedef int RtInt;
   =========================================================================*/
 
 %rename(Begin) RiBegin;
-extern void RiBegin (RtToken name);
+EXTERN void RiBegin (RtToken name);
 
 %rename(End) RiEnd;
-extern void RiEnd (void);
+EXTERN void RiEnd (void);
 
 // We do not implement Context stuff because it can be done via object
 // instances
 
 %rename (FrameBegin) RiFrameBegin;
-extern void  RiFrameBegin( RtInt frame );
+EXTERN void  RiFrameBegin( RtInt frame );
 
 %rename (FrameEnd) RiFrameEnd;
-extern void RiFrameEnd( void );
+EXTERN void RiFrameEnd( void );
 
 %rename(WorldBegin) RiWorldBegin;
-extern void RiWorldBegin (void);
+EXTERN void RiWorldBegin (void);
 
 %rename(WorldEnd) RiWorldEnd;
-extern void RiWorldEnd (void);
+EXTERN void RiWorldEnd (void);
 
 %rename (Format) RiFormat;
-extern void RiFormat( RtInt xresolution,
+EXTERN void RiFormat( RtInt xresolution,
 		      RtInt yresolution,
 		      RtFloat pixelaspectratio );
 
 %rename (FrameAspectRatio) RiFrameAspectRatio;
-extern void RiFrameAspectRatio( RtFloat frameaspectratio );
+EXTERN void RiFrameAspectRatio( RtFloat frameaspectratio );
 
 %rename (ScreenWindow) RiScreenWindow;
-extern void  RiScreenWindow( RtFloat left,
+EXTERN void  RiScreenWindow( RtFloat left,
 			     RtFloat right,
 			     RtFloat bottom,
 			     RtFloat top );
 
 %rename(CropWindow) RiCropWindow;
-extern void RiCropWindow( RtFloat xmin,
+EXTERN void RiCropWindow( RtFloat xmin,
 			  RtFloat xmax,
 			  RtFloat ymin,
 			  RtFloat ymax );
 
 %rename(Projection) RiProjectionV;
-extern void RiProjectionV (RtToken name,
+EXTERN void RiProjectionV (RtToken name,
 			   RtInt n, RtToken tokens[], RtPointer params[]);
 
 %rename(Clipping) RiClipping;
-extern void RiClipping( RtFloat near,
+EXTERN void RiClipping( RtFloat near,
 			RtFloat far );
 
 %rename(ClippingPlane) RiClippingPlane;
-extern void RiClippingPlane ( RtFloat nx,
+EXTERN void RiClippingPlane ( RtFloat nx,
 			      RtFloat ny,
 			      RtFloat nz,
 			      RtFloat x,
@@ -400,206 +402,206 @@ extern void RiClippingPlane ( RtFloat nx,
 			      RtFloat z);
 
 %rename(DepthOfField) RiDepthOfField;
-extern void RiDepthOfField( RtFloat fstop,
+EXTERN void RiDepthOfField( RtFloat fstop,
 			    RtFloat focallength,
 			    RtFloat focaldistance );
 
 %rename(Shutter) RiShutter;
-extern void RiShutter( RtFloat min,
+EXTERN void RiShutter( RtFloat min,
 		       RtFloat max );
 
 %rename (PixelVariance) RiPixelVariance;
-extern void RiPixelVariance ( RtFloat variation );
+EXTERN void RiPixelVariance ( RtFloat variation );
 
 %rename (PixelSamples) RiPixelSamples;
-extern void RiPixelSamples( RtFloat xsamples,
+EXTERN void RiPixelSamples( RtFloat xsamples,
 			    RtFloat ysamples );
 %rename (PixelFilter) RiPixelFilter;
-extern void RiPixelFilter( RtFilterFunc filterfunc,
+EXTERN void RiPixelFilter( RtFilterFunc filterfunc,
 			   RtFloat xwidth,
 			   RtFloat ywidth );
 
 %rename (Exposure) RiExposure;
-extern void RiExposure( RtFloat gain,
+EXTERN void RiExposure( RtFloat gain,
 			RtFloat gamma );
 
 %rename (Imager) RiImagerV;
-extern void RiImagerV( RtToken name,
+EXTERN void RiImagerV( RtToken name,
 		       RtInt n, RtToken tokens[], RtPointer params[]);
 
 %rename (Quantize) RiQuantize;
-extern void RiQuantize( RtToken type,
+EXTERN void RiQuantize( RtToken type,
 			RtInt one,
 			RtInt min,
 			RtInt max,
 			RtFloat ditheramplitude );
 
 %rename (DisplayChannel) RiDisplayChannelV;
-extern void RiDisplayChannelV( RtToken channel,
+EXTERN void RiDisplayChannelV( RtToken channel,
 			       RtInt n, RtToken tokens[], RtPointer params[]);
 
 %rename (Display) RiDisplayV;
-extern void RiDisplayV( RtToken name, RtToken type, RtToken mode,
+EXTERN void RiDisplayV( RtToken name, RtToken type, RtToken mode,
 			RtInt n, RtToken tokens[], RtPointer params[]);
 
 %rename (Hider) RiHiderV;
-extern void RiHiderV( RtToken type,
+EXTERN void RiHiderV( RtToken type,
 		      RtInt n, RtToken tokens[], RtPointer params[]);
 
 #if defined(PIXIE_RIBCLIENT) || defined(PRMAN_RIBCLIENT)
 %rename (ColorSamples) RiColorSamples;
-extern void RiColorSamples( RtInt n, RtFloat nRGB[], RtFloat RGBn[] );
+EXTERN void RiColorSamples( RtInt n, RtFloat nRGB[], RtFloat RGBn[] );
 #endif
 
 %rename (RelativeDetail) RiRelativeDetail;
-extern void RiRelativeDetail( RtFloat relativedetail );
+EXTERN void RiRelativeDetail( RtFloat relativedetail );
 
 %rename (Option) RiOptionV;
-extern void RiOptionV( RtToken name,
+EXTERN void RiOptionV( RtToken name,
 		       RtInt n, RtToken tokens[], RtPointer params[] );
 
 %rename (AttributeBegin) RiAttributeBegin;
-extern void RiAttributeBegin();
+EXTERN void RiAttributeBegin();
 
 %rename (AttributeEnd) RiAttributeEnd;
-extern void RiAttributeEnd();
+EXTERN void RiAttributeEnd();
 
 %rename (Color) RiColor;
-extern void RiColor( RtColor color );
+EXTERN void RiColor( RtColor color );
 
 %rename (Opacity) RiOpacity;
-extern void RiOpacity( RtColor color );
+EXTERN void RiOpacity( RtColor color );
 
 %rename (TextureCoordinates) RiTextureCoordinates;
-extern void RiTextureCoordinates(RtFloat s1, RtFloat t1,
+EXTERN void RiTextureCoordinates(RtFloat s1, RtFloat t1,
 				 RtFloat s2, RtFloat t2,
 				 RtFloat s3, RtFloat t3,
 				 RtFloat s4, RtFloat t4);
 
 %rename (LightSource) RiLightSourceV;
-extern RtLightHandle
+EXTERN RtLightHandle
 RiLightSourceV(RtToken shadername,
 	       RtInt n, RtToken tokens[], RtPointer params[] );
 
 %rename (AreaLightSource) RiAreaLightSourceV;
-extern RtLightHandle
+EXTERN RtLightHandle
 RiAreaLightSourceV( RtToken shadername,
 		    RtInt n, RtToken tokens[], RtPointer params[] );
 
 %rename (Illuminate) RiIlluminate;
-extern void RiIlluminate( RtLightHandle light, RtBoolean onoff );
+EXTERN void RiIlluminate( RtLightHandle light, RtBoolean onoff );
 
 %rename (Surface) RiSurfaceV;
-extern void RiSurfaceV( RtToken shadername,
+EXTERN void RiSurfaceV( RtToken shadername,
 			RtInt n, RtToken tokens[], RtPointer params[]);
 
 %rename (Displacement) RiDisplacementV;
-extern void RiDisplacementV( RtToken shadername,
+EXTERN void RiDisplacementV( RtToken shadername,
 			     RtInt n, RtToken tokens[], RtPointer params[]);
 
 %rename (Atmosphere) RiAtmosphereV;
-extern void RiAtmosphereV( RtToken shadername,
+EXTERN void RiAtmosphereV( RtToken shadername,
 			   RtInt n, RtToken tokens[], RtPointer params[]);
 
 %rename (Interior) RiInteriorV;
-extern void RiInteriorV( RtToken shadername,
+EXTERN void RiInteriorV( RtToken shadername,
 			 RtInt n, RtToken tokens[], RtPointer params[]);
 
 %rename (Exterior) RiExteriorV;
-extern void RiExteriorV( RtToken shadername,
+EXTERN void RiExteriorV( RtToken shadername,
 			 RtInt n, RtToken tokens[], RtPointer params[]);
 
 %rename (ShadingRate) RiShadingRate;
-extern void RiShadingRate( RtFloat size );
+EXTERN void RiShadingRate( RtFloat size );
 
 %rename (ShadingInterpolation) RiShadingInterpolation;
-extern void RiShadingInterpolation( RtToken type );
+EXTERN void RiShadingInterpolation( RtToken type );
 
 %rename (Matte) RiMatte;
-extern void RiMatte( RtBoolean onoff );
+EXTERN void RiMatte( RtBoolean onoff );
 
 %rename (Bound) RiBound;
-extern void RiBound( RtBound bound );
+EXTERN void RiBound( RtBound bound );
 
 %rename (Detail) RiDetail;
-extern void RiDetail( RtBound bound );
+EXTERN void RiDetail( RtBound bound );
 
 %rename (DetailRange) RiDetailRange;
-extern void RiDetailRange( RtFloat minvisible, RtFloat lowertransition,RtFloat uppertransition, RtFloat maxvisible );
+EXTERN void RiDetailRange( RtFloat minvisible, RtFloat lowertransition,RtFloat uppertransition, RtFloat maxvisible );
 
 %rename (GeometricApproximation) RiGeometricApproximation;
-extern void RiGeometricApproximation( RtToken type, RtFloat value );
+EXTERN void RiGeometricApproximation( RtToken type, RtFloat value );
 
 %rename (Orientation) RiOrientation;
-extern void RiOrientation( RtToken orientation );
+EXTERN void RiOrientation( RtToken orientation );
 
 %rename (ReverseOrientation) RiReverseOrientation;
-extern void RiReverseOrientation();
+EXTERN void RiReverseOrientation();
 
 %rename (Sides) RiSides;
-extern void RiSides( RtInt sides );
+EXTERN void RiSides( RtInt sides );
 
 %rename (Identity) RiIdentity;
-extern void RiIdentity();
+EXTERN void RiIdentity();
 
 %rename (Transform) RiTransform;
-extern void RiTransform( RtMatrix tx);
+EXTERN void RiTransform( RtMatrix tx);
 
 %rename (ConcatTransform) RiConcatTransform;
-extern void RiConcatTransform( RtMatrix transform );
+EXTERN void RiConcatTransform( RtMatrix transform );
 
 %rename (Perspective) RiPerspective;
-extern void RiPerspective( RtFloat fov );
+EXTERN void RiPerspective( RtFloat fov );
 
 %rename (Translate) RiTranslate;
-extern void RiTranslate( RtFloat dx, RtFloat dy, RtFloat dz );
+EXTERN void RiTranslate( RtFloat dx, RtFloat dy, RtFloat dz );
 
 %rename (Rotate) RiRotate;
-extern void RiRotate( RtFloat angle, RtFloat dx, RtFloat dy, RtFloat dz );
+EXTERN void RiRotate( RtFloat angle, RtFloat dx, RtFloat dy, RtFloat dz );
 
 %rename (Scale) RiScale;
-extern void RiScale( RtFloat sx, RtFloat sy, RtFloat sz );
+EXTERN void RiScale( RtFloat sx, RtFloat sy, RtFloat sz );
 
 %rename (Skew) RiSkew;
-extern void RiSkew( RtFloat angle,
+EXTERN void RiSkew( RtFloat angle,
 		    RtFloat dx1, RtFloat dy1, RtFloat dz1,
 		    RtFloat dx2, RtFloat dy2, RtFloat dz2 );
 
 %rename (CoordinateSystem) RiCoordinateSystem;
-extern void RiCoordinateSystem( RtToken space );
+EXTERN void RiCoordinateSystem( RtToken space );
 
 #if defined(PRMAN_RIBCLIENT) || defined(DELIGHT_RIBCLIENT)
 %rename (ScopedCoordinateSystem) RiScopedCoordinateSystem;
-extern void RiScopedCoordinateSystem( RtToken name );
+EXTERN void RiScopedCoordinateSystem( RtToken name );
 #endif
 
 %rename (CoordSysTransform) RiCoordSysTransform;
-extern void RiCoordSysTransform ( RtToken name );
+EXTERN void RiCoordSysTransform ( RtToken name );
 
 // Not sure if this is needed
 //  RtPoint *RiTransformPoints( RtToken fromspace, RtToken tospace,
 //                              RtInt n, RtPoint points )
 
 %rename (TransformBegin) RiTransformBegin;
-extern void RiTransformBegin();
+EXTERN void RiTransformBegin();
 
 %rename (TransformEnd) RiTransformEnd;
-extern void RiTransformEnd();
+EXTERN void RiTransformEnd();
 
 %rename (Resource) RiResourceV;
-extern void RiResourceV( RtToken handle, RtToken type,
+EXTERN void RiResourceV( RtToken handle, RtToken type,
 			 RtInt n, RtToken tokens[], RtPointer params[]);
 
 #if defined(DELIGHT_RIBCLIENT)
 %rename (ResourceBegin) RiResourceBegin;
-extern void RiResourceBegin();
+EXTERN void RiResourceBegin();
 
 %rename (ResourceEnd) RiResourceEnd;
-extern void RiResourceEnd();
+EXTERN void RiResourceEnd();
 #endif //
 
 %rename (Attribute) RiAttributeV;
-extern void RiAttributeV( RtToken name,
+EXTERN void RiAttributeV( RtToken name,
 			  RtInt n, RtToken tokens[], RtPointer params[]);
 //=============================================================================
 
@@ -639,52 +641,52 @@ extern void RiAttributeV( RtToken name,
   =========================================================================*/
 
 %rename (Polygon) RiPolygonV;
-extern void RiPolygonV( RtInt nvertices,
+EXTERN void RiPolygonV( RtInt nvertices,
 			RtInt n, RtToken tokens[], RtPointer params[]);
 
 %rename (GeneralPolygon) RiGeneralPolygonV;
-extern void RiGeneralPolygonV( RtInt nloops, RtInt nvertices[],
+EXTERN void RiGeneralPolygonV( RtInt nloops, RtInt nvertices[],
 			       RtInt n, RtToken tokens[], RtPointer params[]);
 
 %rename (PointsPolygons) RiPointsPolygonsV;
-extern void
+EXTERN void
 RiPointsPolygonsV( RtInt npolys, RtInt nvertices[], RtInt vertices[],
 		   RtInt n, RtToken tokens[], RtPointer params[]);
 
 %rename (PointsGeneralPolygons) RiPointsGeneralPolygonsV;
-extern void
+EXTERN void
 RiPointsGeneralPolygonsV( RtInt npolys, RtInt nloops[],
 			  RtInt nvertices[], RtInt vertices[],
 			  RtInt n, RtToken tokens[], RtPointer params[]);
 %rename(Basis) RiBasis;
-extern void RiBasis( RtBasis ubasis,
+EXTERN void RiBasis( RtBasis ubasis,
 		     RtInt ustep,
 		     RtBasis vbasis,
 		     RtInt vstep );
 
 %rename (Patch) RiPatchV;
-extern void RiPatchV( RtToken type,
+EXTERN void RiPatchV( RtToken type,
 		      RtInt n, RtToken tokens[], RtPointer params[]);
 
 %rename (PatchMesh) RiPatchMeshV;
-extern void RiPatchMeshV( RtToken type,
+EXTERN void RiPatchMeshV( RtToken type,
 			  RtInt nu, RtToken uwrap, RtInt nv, RtToken vwrap,
 			  RtInt n, RtToken tokens[], RtPointer params[]);
 
 %rename (NuPatch) RiNuPatchV;
-extern void RiNuPatchV( RtInt nu, RtInt uorder, RtFloat uknot[],
+EXTERN void RiNuPatchV( RtInt nu, RtInt uorder, RtFloat uknot[],
 			RtFloat umin, RtFloat umax,
 			RtInt nv, RtInt vorder, RtFloat vknot[],
 			RtFloat vmin, RtFloat vmax,
 			RtInt n, RtToken tokens[], RtPointer params[]);
 
 %rename (TrimCurve) RiTrimCurve;
-extern void RiTrimCurve( RtInt nloops, RtInt ncurves[], RtInt order[],
+EXTERN void RiTrimCurve( RtInt nloops, RtInt ncurves[], RtInt order[],
 			 RtFloat knot[], RtFloat min[], RtFloat max[],
 			 RtInt n[], RtFloat u[], RtFloat v[], RtFloat w[] );
 
 %rename (SubdivisionMesh) RiSubdivisionMeshV;
-extern void RiSubdivisionMeshV( RtToken scheme,
+EXTERN void RiSubdivisionMeshV( RtToken scheme,
 				RtInt nfaces, RtInt nvertices[],
 				RtInt vertices[],
 				RtInt ntags, RtToken tags[],
@@ -694,78 +696,78 @@ extern void RiSubdivisionMeshV( RtToken scheme,
 
 
 %rename (Sphere) RiSphereV;
-extern void RiSphereV( RtFloat radius, RtFloat zmin, RtFloat zmax,
+EXTERN void RiSphereV( RtFloat radius, RtFloat zmin, RtFloat zmax,
 		       RtFloat thetamax,
 		       RtInt n, RtToken tokens[], RtPointer params[] );
 
 %rename (Cone) RiConeV;
-extern void RiConeV( RtFloat height, RtFloat radius, RtFloat thetamax,
+EXTERN void RiConeV( RtFloat height, RtFloat radius, RtFloat thetamax,
 		     RtInt n, RtToken tokens[], RtPointer params[] );
 
 %rename (Cylinder) RiCylinderV;
-extern void RiCylinderV( RtFloat radius, RtFloat zmin, RtFloat zmax,
+EXTERN void RiCylinderV( RtFloat radius, RtFloat zmin, RtFloat zmax,
 			 RtFloat thetamax,
 			 RtInt n, RtToken tokens[], RtPointer params[] );
 
 %rename (Hyperboloid) RiHyperboloidV;
-extern void RiHyperboloidV( RtPoint point1, RtPoint point2, RtFloat thetamax,
+EXTERN void RiHyperboloidV( RtPoint point1, RtPoint point2, RtFloat thetamax,
 			    RtInt n, RtToken tokens[], RtPointer params[] );
 
 %rename (Paraboloid) RiParaboloidV;
-extern void RiParaboloidV( RtFloat rmax, RtFloat zmin, RtFloat zmax,
+EXTERN void RiParaboloidV( RtFloat rmax, RtFloat zmin, RtFloat zmax,
 			   RtFloat thetamax,
 			   RtInt n, RtToken tokens[], RtPointer params[] );
 
 %rename (Disk) RiDiskV;
-extern void RiDiskV( RtFloat height, RtFloat radius, RtFloat thetamax,
+EXTERN void RiDiskV( RtFloat height, RtFloat radius, RtFloat thetamax,
 		     RtInt n, RtToken tokens[], RtPointer params[] );
 
 %rename (Torus) RiTorusV;
-extern void RiTorusV( RtFloat majorradius, RtFloat minorradius,
+EXTERN void RiTorusV( RtFloat majorradius, RtFloat minorradius,
 		      RtFloat phimin, RtFloat phimax, RtFloat thetamax,
 		      RtInt n, RtToken tokens[], RtPointer params[] );
 
 %rename (Points) RiPointsV;
-extern void RiPointsV ( RtInt npoints,
+EXTERN void RiPointsV ( RtInt npoints,
 			RtInt n, RtToken tokens[], RtPointer params[]);
 
 %rename (Curves) RiCurvesV;
-extern void RiCurvesV ( RtToken type, RtInt ncurves, RtInt nvertices[],
+EXTERN void RiCurvesV ( RtToken type, RtInt ncurves, RtInt nvertices[],
 			RtToken wrap,
 			RtInt n, RtToken tokens[], RtPointer params[]);
 
 %rename (Blobby) RiBlobbyV;
-extern void RiBlobbyV ( RtInt nleaf, RtInt ncode, RtInt code[],
+EXTERN void RiBlobbyV ( RtInt nleaf, RtInt ncode, RtInt code[],
 			RtInt nfloats, RtFloat floats[],
 			RtInt nstrings, RtString strings[],
 			RtInt n, RtToken tokens[], RtPointer params[]);
 
 /*
 %rename (Procedural) RiProcedural;
-extern void RiProcedural( RtToken data[],
+EXTERN void RiProcedural( RtToken data[],
 			  RtBound bound,
 			  RtProcSubdivFunc subdividefunc,
 			  RtProcFreeFunc freefunc );
 */
 
 %rename (Geometry) RiGeometryV;
-extern void RiGeometryV( RtToken type,
+EXTERN void RiGeometryV( RtToken type,
 			 RtInt n, RtToken tokens[], RtPointer params[] );
 
 %rename (SolidBegin) RiSolidBegin;
-extern void RiSolidBegin( RtToken operation );
+EXTERN void RiSolidBegin( RtToken operation );
 
 %rename (SolidEnd) RiSolidEnd;
-extern void RiSolidEnd();
+EXTERN void RiSolidEnd();
 
 %rename (ObjectBegin) RiObjectBegin;
-extern RtObjectHandle RiObjectBegin();
+EXTERN RtObjectHandle RiObjectBegin();
 
 %rename (ObjectEnd) RiObjectEnd;
-extern void RiObjectEnd();
+EXTERN void RiObjectEnd();
 
 %rename (ObjectInstance) RiObjectInstance;
-extern void RiObjectInstance( RtObjectHandle handle );
+EXTERN void RiObjectInstance( RtObjectHandle handle );
 
 /*===========================================================================
   Motion
@@ -774,10 +776,10 @@ extern void RiObjectInstance( RtObjectHandle handle );
   =========================================================================*/
 
 %rename (MotionBegin) RiMotionBeginV;
-extern void RiMotionBeginV(RtInt n, RtFloat times[]);
+EXTERN void RiMotionBeginV(RtInt n, RtFloat times[]);
 
 %rename (MotionEnd) RiMotionEnd();
-extern void RiMotionEnd();
+EXTERN void RiMotionEnd();
 
 /*===========================================================================
   External Resources
@@ -799,20 +801,20 @@ extern void RiMotionEnd();
   =========================================================================*/
 
 %rename (MakeTexture) RiMakeTextureV;
-extern void RiMakeTextureV( char *picturename, char *texturename,
+EXTERN void RiMakeTextureV( char *picturename, char *texturename,
 			    RtToken swrap, RtToken twrap,
 			    RtFilterFunc filterfunc,
 			    RtFloat swidth, RtFloat twidth,
 			    RtInt n, RtToken tokens[], RtPointer params[] );
 
 %rename (MakeLatLongEnvironment) RiMakeLatLongEnvironmentV;
-extern void RiMakeLatLongEnvironmentV( char *picturename, char *texturename,
+EXTERN void RiMakeLatLongEnvironmentV( char *picturename, char *texturename,
 				       RtFilterFunc filterfunc,
 				       RtFloat swidth, RtFloat twidth,
 				       RtInt n, RtToken tokens[], RtPointer params[] );
 
 %rename (MakeCubeFaceEnvironment) RiMakeCubeFaceEnvironmentV;
-extern void RiMakeCubeFaceEnvironmentV( char *px, char *nx,
+EXTERN void RiMakeCubeFaceEnvironmentV( char *px, char *nx,
 					char *py, char *ny,
 					char *pz, char *nz,
 					char *texturename,
@@ -821,28 +823,28 @@ extern void RiMakeCubeFaceEnvironmentV( char *px, char *nx,
 					RtInt n, RtToken tokens[], RtPointer params[] );
 
 %rename (MakeShadow)   RiMakeShadowV;
-extern void RiMakeShadowV( char *picturename, char *texturename,
+EXTERN void RiMakeShadowV( char *picturename, char *texturename,
 			   RtInt n, RtToken tokens[], RtPointer params[] );
   
 %rename (MakeBrickMap) RiMakeBrickMapV;
-extern void RiMakeBrickMapV( int n, RtToken ptcnames[], char *bkmname,
+EXTERN void RiMakeBrickMapV( int n, RtToken ptcnames[], char *bkmname,
 			     RtInt n, RtToken tokens[], RtPointer params[]);
 
 %varargs(10,char *arg = NULL) RiArchiveRecord;
 %rename (ArchiveRecord) RiArchiveRecord;
-extern void RiArchiveRecord( RtToken type, char *format, ...);
+EXTERN void RiArchiveRecord( RtToken type, char *format, ...);
 
 %rename (ReadArchive) RiReadArchiveV;
-extern void RiReadArchiveV ( RtToken name,
+EXTERN void RiReadArchiveV ( RtToken name,
 			     RtArchiveCallback func,
 			     RtInt n, RtToken tokens[], RtPointer params[]);
 
 %rename (ArchiveBegin) RiArchiveBeginV;
-extern RtArchiveHandle RiArchiveBeginV ( RtToken archivename,
+EXTERN RtArchiveHandle RiArchiveBeginV ( RtToken archivename,
 					 RtInt n, RtToken tokens[], RtPointer params[]);
 
 %rename (ArchiveEnd) RiArchiveEnd;
-extern void RiArchiveEnd();
+EXTERN void RiArchiveEnd();
 
 
 /*===========================================================================
@@ -851,4 +853,4 @@ extern void RiArchiveEnd();
   =========================================================================*/
 
 %rename (Declare) RiDeclare;
-extern RtToken RiDeclare(char *name, char *declaration);
+EXTERN RtToken RiDeclare(char *name, char *declaration);
