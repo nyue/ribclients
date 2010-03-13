@@ -7,14 +7,14 @@
 #undef read
 #undef write
 #endif
-  %}
+    %}
 
 %module rxclient
 
 %{ 
 #include <rx.h>
 #include <ParameterList.h>
- }%
+    %}
 
 %rename (Texture) RxTextureV;
 RtInt
