@@ -11,10 +11,48 @@
 
 %module rxclient
 
-%{ 
+%{
+#include <ri.h> 
 #include <rx.h>
+#include <iostream>
 #include <ParameterList.h>
     %}
+
+#if (defined SWIGJAVA)
+// %include "RIBClient_java.i"
+
+typedef float RtFloat;
+typedef int RtInt;
+typedef char* RtToken;
+typedef int RtFilterFunc;
+typedef int RtArchiveCallback;
+typedef int RtBasis;
+typedef float RtMatrix[4][4];
+typedef float RtColor[];
+typedef bool RtBoolean;
+
+#elif defined(SWIGPYTHON)
+
+typedef long RtFilterFunc;
+typedef void* RtArchiveCallback;
+typedef float RtFloat;
+typedef char* RtToken;
+typedef char* RtString;
+typedef bool RtBoolean;
+
+// %include "RIBClient_python.i"
+
+#elif defined(SWIGRUBY)
+
+typedef char* RtToken;
+typedef char* RtString;
+typedef float RtFloat;
+typedef bool RtBoolean;
+typedef int RtInt;
+
+#elif defined(SWIGCSHARP)
+#else
+#endif
 
 %rename (Texture) RxTextureV;
 RtInt
@@ -33,3 +71,10 @@ RxTextureV(RtString i_fileName,
 	   RtInt i_n,
 	   RtToken i_tokens[],
 	   RtPointer i_parms[]);
+
+%rename (Option) RxOption;
+RtInt RxOption (RtToken i_name,
+                RtPointer o_result,
+                RtInt i_resultLen,
+                RxInfoType_t *o_resulttype,
+                RtInt *o_resultcount);
