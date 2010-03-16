@@ -19,7 +19,11 @@ ri.Option('user',{'float data':[1.14143]})
 
 #==========================================
 # read the same data back from the renderer
-data = rx.Option('user',['float data'])
+result = None
+result_count = 0
+result_type = None
+result_len = 0
+data = rx.Option('user',result,result_len,result_type,result_count)
 # at this point data should have the correct value, or None is there is an error
 print data
 #==========================================
