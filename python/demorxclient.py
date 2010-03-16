@@ -12,6 +12,8 @@ rx = rxclient
 
 ri.Option('rib',{'compression':['gzip']})
 
+ri.Begin('demorxclient.rib')
+
 #==========================================
 ri.Option('user',{'float data':[1.14143]})
 
@@ -22,7 +24,6 @@ data = rx.Option('user',['float data'])
 print data
 #==========================================
 
-ri.Begin('demoribclient.rib')
 
 ri.Option('rib',{'format':['binary']})
 
