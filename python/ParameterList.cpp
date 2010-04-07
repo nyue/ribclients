@@ -4,6 +4,33 @@
 typedef int Py_ssize_t;
 #endif
 
+/* Warning: This function will allocate a new string in Python 3,
+ * so please call SWIG_Python_str_DelForPy3(x) to free the space.
+ */
+char*
+VII_Python_str_AsChar(PyObject *str)
+{
+#if PY_VERSION_HEX >= 0x03000000
+  char *cstr;
+  char *newstr;
+  Py_ssize_t len;
+  str = PyUnicode_AsUTF8String(str);
+  PyBytes_AsStringAndSize(str, &cstr, &len);
+  newstr = (char *) malloc(len+1);
+  memcpy(newstr, cstr, len+1);
+  Py_XDECREF(str);
+  return newstr;
+#else
+  return PyString_AsString(str);
+#endif
+}
+
+#if PY_VERSION_HEX >= 0x03000000
+#  define VII_Python_str_DelForPy3(x) free( (void*) (x) )
+#else
+#  define VII_Python_str_DelForPy3(x) 
+#endif
+
 ParameterList::ParameterList(DeclarationManager& dm)
   : TParameterList<PyObject*>(dm)
 {
@@ -48,7 +75,7 @@ bool ParameterList::ProcessParameterList(PyObject* parameterlist)
        */
       while (PyDict_Next(parameterlist,&ppos,&pkey,&pvalue)) {
         // Check that key is a string type
-        if (!PyString_CheckExact(pkey)) {
+        if (!PyUnicode_CheckExact(pkey)) {
 	  std::cerr << "Key is not a string" << std::endl;
           return false;
         }
@@ -59,7 +86,8 @@ bool ParameterList::ProcessParameterList(PyObject* parameterlist)
         }
 	
         // Display key
-        char *keyString = PyString_AsString(pkey);
+        // char *keyString = PyString_AsString(pkey);
+        char *keyString = VII_Python_str_AsChar(pkey);
 	/*
 	std::cout << "Key item "
 		  << dictIndex
@@ -76,6 +104,9 @@ bool ParameterList::ProcessParameterList(PyObject* parameterlist)
 	_tokens[dictIndex] = const_cast<char*>(_tokenStorage[dictIndex].c_str());
 
         dictIndex++;
+
+        // Clean up (python3 string)
+        VII_Python_str_DelForPy3(keyString);
       }
     }
   }
@@ -152,8 +183,8 @@ void ParameterList::ExtractValue(PyObject* pvalue,
     PyObject* item = NULL;
     item = PyList_GetItem(pvalue,parmIndex);
     if (item != NULL) {
-      int isString = PyString_Check(item);
-      int isInt = PyInt_Check(item);
+      int isString = PyUnicode_Check(item);
+      int isInt = PyLong_Check(item);
       int isFloat = PyFloat_Check(item);
 
       switch (di._type) {
@@ -165,7 +196,7 @@ void ParameterList::ExtractValue(PyObject* pvalue,
       case DeclarationManager::DeclarationInfo::MATRIX:
       case DeclarationManager::DeclarationInfo::HPOINT:
 	if (isInt) {
-	  fParm = static_cast<float>(PyInt_AsLong(item));
+	  fParm = static_cast<float>(PyLong_AsLong(item));
 	} else if (isFloat) {
 	  fParm = static_cast<float>(PyFloat_AsDouble(item));
 	}
@@ -173,7 +204,7 @@ void ParameterList::ExtractValue(PyObject* pvalue,
 	break;
       case DeclarationManager::DeclarationInfo::INTEGER:
 	if (isInt) {
-	  iParm = static_cast<RtInt>(PyInt_AsLong(item));
+	  iParm = static_cast<RtInt>(PyLong_AsLong(item));
 	  _integerParamStorage.back()[parmIndex] = iParm;
 	} else {
 	  std::cerr << "Expecting integer parameter" << std::endl;
@@ -181,8 +212,11 @@ void ParameterList::ExtractValue(PyObject* pvalue,
 	break;
       case DeclarationManager::DeclarationInfo::STRING:
 	if (isString) {
-	  sParm = PyString_AsString(item);
-	  _stringParamStorage.back()[parmIndex] = sParm;
+            // sParm = PyString_AsString(item);
+            char *tempStr = VII_Python_str_AsChar(item);
+            _stringParamStorage.back()[parmIndex] = tempStr;
+            // Clean up (python3 string)
+            VII_Python_str_DelForPy3(tempStr);
 	} else {
 	  std::cerr << "Expecting string parameter" << std::endl;
 	}
@@ -239,10 +273,13 @@ void ParameterList::ConvertToSTLStringVector(PyObject* stringArray,
     PyObject* item = NULL;
     item = PyList_GetItem(stringArray,i);
     if (item != NULL) {
-      int isString = PyString_Check(item);
+      int isString = PyUnicode_Check(item);
       if (isString) {
-	std::string s = PyString_AsString(item);
-	stringVector[i] = s;
+          // std::string s = PyString_AsString(item);
+          char *tempStr = VII_Python_str_AsChar(item);
+          stringVector[i] = tempStr;
+          // Clean up (python3 string)
+          VII_Python_str_DelForPy3(tempStr);
       } else {
 	throw std::invalid_argument("Expecting a string value");
       }
@@ -266,7 +303,7 @@ void ParameterList::ConvertToRtIntVector(PyObject* integerArray,
     PyObject* item = NULL;
     item = PyList_GetItem(integerArray,i);
     if (item != NULL) {
-      int isInteger = PyInt_Check(item);
+      int isInteger = PyLong_Check(item);
       if (isInteger) {
 	RtInt value = PyLong_AsLong(item);
 	integerVector[i] = value;
@@ -296,7 +333,7 @@ void ParameterList::ConvertToRtFloatVector(PyObject* floatArray,
       if (PyFloat_Check(item)) {
 	RtFloat value = static_cast<RtFloat>(PyFloat_AsDouble(item));
 	floatVector[i] = value;
-      } else if (PyInt_Check(item)) {
+      } else if (PyLong_Check(item)) {
 	RtInt value = PyLong_AsLong(item);
 	floatVector[i] = static_cast<float>(value);
       } else {
