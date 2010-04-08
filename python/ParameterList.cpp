@@ -75,7 +75,11 @@ bool ParameterList::ProcessParameterList(PyObject* parameterlist)
        */
       while (PyDict_Next(parameterlist,&ppos,&pkey,&pvalue)) {
         // Check that key is a string type
+#if PY_VERSION_HEX >= 0x03000000
         if (!PyUnicode_CheckExact(pkey)) {
+#else
+        if (!PyString_CheckExact(pkey)) {
+#endif // PY_VERSION_HEX >= 0x03000000
 	  std::cerr << "Key is not a string" << std::endl;
           return false;
         }
@@ -86,8 +90,11 @@ bool ParameterList::ProcessParameterList(PyObject* parameterlist)
         }
 	
         // Display key
-        // char *keyString = PyString_AsString(pkey);
+#if PY_VERSION_HEX >= 0x03000000
         char *keyString = VII_Python_str_AsChar(pkey);
+#else
+        char *keyString = PyString_AsString(pkey);
+#endif // PY_VERSION_HEX >= 0x03000000
 	/*
 	std::cout << "Key item "
 		  << dictIndex
@@ -105,8 +112,9 @@ bool ParameterList::ProcessParameterList(PyObject* parameterlist)
 
         dictIndex++;
 
-        // Clean up (python3 string)
+#if PY_VERSION_HEX >= 0x03000000
         VII_Python_str_DelForPy3(keyString);
+#endif // PY_VERSION_HEX >= 0x03000000
       }
     }
   }
@@ -183,8 +191,13 @@ void ParameterList::ExtractValue(PyObject* pvalue,
     PyObject* item = NULL;
     item = PyList_GetItem(pvalue,parmIndex);
     if (item != NULL) {
+#if PY_VERSION_HEX >= 0x03000000
       int isString = PyUnicode_Check(item);
       int isInt = PyLong_Check(item);
+#else
+      int isString = PyString_Check(item);
+      int isInt = PyInt_Check(item);
+#endif // PY_VERSION_HEX >= 0x03000000
       int isFloat = PyFloat_Check(item);
 
       switch (di._type) {
@@ -196,7 +209,11 @@ void ParameterList::ExtractValue(PyObject* pvalue,
       case DeclarationManager::DeclarationInfo::MATRIX:
       case DeclarationManager::DeclarationInfo::HPOINT:
 	if (isInt) {
+#if PY_VERSION_HEX >= 0x03000000
 	  fParm = static_cast<float>(PyLong_AsLong(item));
+#else
+	  fParm = static_cast<float>(PyInt_AsLong(item));
+#endif // PY_VERSION_HEX >= 0x03000000
 	} else if (isFloat) {
 	  fParm = static_cast<float>(PyFloat_AsDouble(item));
 	}
@@ -204,7 +221,11 @@ void ParameterList::ExtractValue(PyObject* pvalue,
 	break;
       case DeclarationManager::DeclarationInfo::INTEGER:
 	if (isInt) {
+#if PY_VERSION_HEX >= 0x03000000
 	  iParm = static_cast<RtInt>(PyLong_AsLong(item));
+#else
+	  iParm = static_cast<RtInt>(PyInt_AsLong(item));
+#endif // PY_VERSION_HEX >= 0x03000000
 	  _integerParamStorage.back()[parmIndex] = iParm;
 	} else {
 	  std::cerr << "Expecting integer parameter" << std::endl;
@@ -212,11 +233,14 @@ void ParameterList::ExtractValue(PyObject* pvalue,
 	break;
       case DeclarationManager::DeclarationInfo::STRING:
 	if (isString) {
-            // sParm = PyString_AsString(item);
+#if PY_VERSION_HEX >= 0x03000000
             char *tempStr = VII_Python_str_AsChar(item);
             _stringParamStorage.back()[parmIndex] = tempStr;
-            // Clean up (python3 string)
             VII_Python_str_DelForPy3(tempStr);
+#else
+            sParm = PyString_AsString(item);
+            _stringParamStorage.back()[parmIndex] = sParm;
+#endif // PY_VERSION_HEX >= 0x03000000
 	} else {
 	  std::cerr << "Expecting string parameter" << std::endl;
 	}
@@ -273,13 +297,21 @@ void ParameterList::ConvertToSTLStringVector(PyObject* stringArray,
     PyObject* item = NULL;
     item = PyList_GetItem(stringArray,i);
     if (item != NULL) {
+#if PY_VERSION_HEX >= 0x03000000
       int isString = PyUnicode_Check(item);
+#else
+      int isString = PyString_Check(item);
+#endif // PY_VERSION_HEX >= 0x03000000
+
       if (isString) {
-          // std::string s = PyString_AsString(item);
+#if PY_VERSION_HEX >= 0x03000000
           char *tempStr = VII_Python_str_AsChar(item);
           stringVector[i] = tempStr;
-          // Clean up (python3 string)
           VII_Python_str_DelForPy3(tempStr);
+#else
+          std::string s = PyString_AsString(item);
+          stringVector[i] = s;
+#endif // PY_VERSION_HEX >= 0x03000000
       } else {
 	throw std::invalid_argument("Expecting a string value");
       }
@@ -303,7 +335,11 @@ void ParameterList::ConvertToRtIntVector(PyObject* integerArray,
     PyObject* item = NULL;
     item = PyList_GetItem(integerArray,i);
     if (item != NULL) {
+#if PY_VERSION_HEX >= 0x03000000
       int isInteger = PyLong_Check(item);
+#else
+      int isInteger = PyInt_Check(item);
+#endif // PY_VERSION_HEX >= 0x03000000
       if (isInteger) {
 	RtInt value = PyLong_AsLong(item);
 	integerVector[i] = value;
@@ -333,7 +369,11 @@ void ParameterList::ConvertToRtFloatVector(PyObject* floatArray,
       if (PyFloat_Check(item)) {
 	RtFloat value = static_cast<RtFloat>(PyFloat_AsDouble(item));
 	floatVector[i] = value;
+#if PY_VERSION_HEX >= 0x03000000
       } else if (PyLong_Check(item)) {
+#else
+      } else if (PyInt_Check(item)) {
+#endif // PY_VERSION_HEX >= 0x03000000
 	RtInt value = PyLong_AsLong(item);
 	floatVector[i] = static_cast<float>(value);
       } else {
