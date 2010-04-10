@@ -23,9 +23,9 @@ DeclarationManager::DeclarationManager()
 {
   LOG4CXX_DEBUG(DMlogger,"DeclarationManager c'tor");
   InitializeDefaultDeclarations();
-#ifdef DEBUG
+#ifdef _DEBUG
   DebugDumpDefinedDeclarations();
-#endif // DEBUG
+#endif // _DEBUG
 }
 
 DeclarationManager::~DeclarationManager()
@@ -51,9 +51,7 @@ void DeclarationManager::Declare(const std::string& typeName,
     // New declaration
     _diContainer[typeName] = di;
   }
-#ifdef DEBUG
   LOG4CXX_DEBUG(DMlogger,"_diContainer has " << _diContainer.size() << " items ");
-#endif // DEBUG
 }
 
 void DeclarationManager::InitializeDefaultDeclarations()
@@ -111,6 +109,10 @@ void DeclarationManager::InitializeDefaultDeclarations()
 
   p_str = "to";
   f_str = "float[3]";
+  Declare(p_str,f_str);
+
+  p_str = "lightcolor";
+  f_str = "color";
   Declare(p_str,f_str);
 
   // Shaders
