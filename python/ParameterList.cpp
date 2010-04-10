@@ -77,14 +77,14 @@ bool ParameterList::ProcessParameterList(PyObject* parameterlist)
     return true;
   LOG4CXX_DEBUG(logger,"ProcessParameterList");
   if (parameterlist != Py_None) {
-    // std::cout << "parameterlist is not None" << std::endl;
+    LOG4CXX_DEBUG(logger,"parameterlist is not None");
     if (PyDict_Check(parameterlist)) {
       PyObject* pkey;
       PyObject* pvalue;
       int dictIndex = 0;
       Py_ssize_t ppos = 0; // Initialize to first item
       int nDictItems = PyDict_Size(parameterlist);
-      // std::cout << "nDictItems [NICHOLAS] = " << nDictItems << std::endl;
+      LOG4CXX_DEBUG(logger,"nDictItems [NICHOLAS] = " << nDictItems);
       if (nDictItems == 0)
 	return true; // Nothing to do
       Init(nDictItems);
@@ -115,13 +115,11 @@ bool ParameterList::ProcessParameterList(PyObject* parameterlist)
 #else
         char *keyString = PyString_AsString(pkey);
 #endif // PY_VERSION_HEX >= 0x03000000
-	/*
-	std::cout << "Key item "
-		  << dictIndex
-		  << " is a string object = "
-		  << keyString
-		  << std::endl;
-	*/
+	LOG4CXX_DEBUG(logger,"Key item "
+                      << dictIndex
+                      << " is a string object = "
+                      << keyString
+                      << std::endl);
 	_tokenStorage[dictIndex] = keyString;
 
         // Display value
@@ -154,7 +152,7 @@ std::ostream& operator <<(std::ostream &os,
 	 << "_tokens[" << i << "] is " << obj._tokens[i]
 	 << std::endl;
     }
-  // std::cout<< "DONE\n";
+  LOG4CXX_DEBUG(logger, "DONE");
   return os;
 }
 
@@ -162,14 +160,14 @@ void ParameterList::ExtractValue(PyObject* pvalue,
 				 int dictIndex,
 				 const char* keyString)
 {
-  // std::cout << "ExtractValue() start" << std::endl;
+  LOG4CXX_DEBUG(logger,"ExtractValue(" << keyString << ") start");
   if (!PyList_Check(pvalue))
     return;
   // From the token, find out what data type to expect
   DeclarationManager::DeclarationInfo di = _dm.GetDeclarationInfo(keyString);
 
   int numElements = PyList_Size(pvalue);
-  // std::cout << "Num items in pvalue = " << numElements << std::endl;
+  LOG4CXX_DEBUG(logger, "Num items in pvalue = " << numElements );
 
   // Prepare the correct storage type since we know what to expect
   std::vector<RtFloat> floatPlaceHolder;
