@@ -20,7 +20,7 @@ ri.Display('demoribclient.tif',ri.FRAMEBUFFER,ri.RGBA,None)
 
 ri.WorldBegin()
     
-plh = ri.LightSource(ri.DISTANTLIGHT,{ri.INTENSITY:[2]})
+plh = ri.LightSource(ri.DISTANTLIGHT,{ri.INTENSITY:[2],ri.LIGHTCOLOR:[1,1,1]})
 
 ri.AttributeBegin()
 ri.Translate(0,0,10)
