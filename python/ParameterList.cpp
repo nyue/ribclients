@@ -1,5 +1,21 @@
 #include "ParameterList.h"
 
+// Logging
+// include log4cxx header files.
+#include <log4cxx/logger.h>
+#include <log4cxx/basicconfigurator.h>
+#include <log4cxx/propertyconfigurator.h>
+#include <log4cxx/helpers/exception.h>
+
+using namespace log4cxx;
+using namespace log4cxx::helpers;
+// Define a static logger variable so that it references the
+// Logger instance named "PythonParameterList".
+LoggerPtr logger(Logger::getLogger("PythonParameterList"));
+
+
+// Python version specific handling
+
 #if PY_VERSION_HEX < 0x02050000
 typedef int Py_ssize_t;
 #endif
