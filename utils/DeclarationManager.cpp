@@ -4,11 +4,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// Logging
+// include log4cxx header files.
+#include <log4cxx/logger.h>
+// #include <log4cxx/basicconfigurator.h>
+// #include <log4cxx/propertyconfigurator.h>
+#include <log4cxx/xml/domconfigurator.h>
+#include <log4cxx/helpers/exception.h>
+
+using namespace log4cxx;
+using namespace log4cxx::xml;
+using namespace log4cxx::helpers;
+// Define a static logger variable so that it references the
+// Logger instance named "PythonParameterList".
+LoggerPtr DMlogger(Logger::getLogger("DeclarationManager"));
+
 DeclarationManager::DeclarationManager()
 {
-#ifdef DEBUG
-  std::cout << "DeclarationManager c'tor" << std::endl;
-#endif // DEBUG
+  LOG4CXX_DEBUG(DMlogger,"DeclarationManager c'tor");
   InitializeDefaultDeclarations();
 #ifdef DEBUG
   DebugDumpDefinedDeclarations();
@@ -28,24 +41,18 @@ void DeclarationManager::Declare(const std::string& typeName,
   DIC_Iter i = _diContainer.find(typeName);
   if (i != _diContainer.end() )
   {
-#ifdef DEBUG
-    std::cout << "Re-declaring " << typeName.c_str() << std::endl;
-#endif // DEBUG
+    LOG4CXX_DEBUG(DMlogger,"Re-declaring " << typeName.c_str());
     // Re-declaration
     i->second = di;
   }
   else
   {
-#ifdef DEBUG
-    std::cout << "Declaring " << typeName.c_str() << std::endl;
-#endif // DEBUG
+    LOG4CXX_DEBUG(DMlogger,"Declaring " << typeName.c_str());
     // New declaration
     _diContainer[typeName] = di;
   }
 #ifdef DEBUG
-  std::cout << "_diContainer has "
-            << _diContainer.size() << " items "
-            << std::endl;
+  LOG4CXX_DEBUG(DMlogger,"_diContainer has " << _diContainer.size() << " items ");
 #endif // DEBUG
 }
 
@@ -138,10 +145,8 @@ void
 DeclarationManager::MakeDeclarationInfo(const std::string& typeDeclaration,
                                         DeclarationInfo& di)
 {
-#ifdef DEBUG
-  std::cout << "MakeDeclarationInfo start processing \""
-            << typeDeclaration.c_str() << "\"" << std::endl;
-#endif // DEBUG
+  LOG4CXX_DEBUG(DMlogger,"MakeDeclarationInfo start processing \""
+                << typeDeclaration.c_str() << "\"");
   std::string delimiters(" ");
   
   std::vector<std::string> tokens =
@@ -153,21 +158,17 @@ DeclarationManager::MakeDeclarationInfo(const std::string& typeDeclaration,
   if (numTokens == 1)
   {
     di._class = DeclarationInfo::VARYING;
-#ifdef DEBUG
-    std::cout << "numTokens == 1, assuming VARYING, type = "
-              << tokens[0].c_str() << std::endl;
-#endif // DEBUG
+    LOG4CXX_DEBUG(DMlogger,"numTokens == 1, assuming VARYING, type = "
+                  << tokens[0].c_str());
     typeString = tokens[0];
   }
   else if (numTokens == 2)
   {
     di._class = String2Class(tokens[0]);
-#ifdef DEBUG
-    std::cout << "numTokens == 2, detail = "
-              << tokens[0].c_str()
-              << ", type = "
-              << tokens[1].c_str() << std::endl;
-#endif // DEBUG
+    LOG4CXX_DEBUG(DMlogger,"numTokens == 2, detail = "
+                  << tokens[0].c_str()
+                  << ", type = "
+                  << tokens[1].c_str());
     typeString = tokens[1];
   } else
     return;
@@ -193,9 +194,7 @@ DeclarationManager::MakeDeclarationInfo(const std::string& typeDeclaration,
     // printf("MakeDeclarationInfo %s[%d]\n",typeName.c_str(),di._size);
     di._type = String2Type(typeName);
   }
-#ifdef DEBUG
-  std::cout << "MakeDeclarationInfo : numTokens " << numTokens << std::endl;
-#endif // DEBUG
+  LOG4CXX_DEBUG(DMlogger,"MakeDeclarationInfo : numTokens " << numTokens);
 }
 
 DeclarationManager::DeclarationInfo
@@ -206,19 +205,16 @@ DeclarationManager::GetDeclarationInfo(const std::string& tokenStr)
   std::vector< std::string > tokenStrComponents = TokenizeDeclaration(tokenStr,delimiter);
   size_t numTokenComponents = tokenStrComponents.size();
   std::string declStr;
-#ifdef DEBUG
-  std::cout << "tokenStr is " << tokenStr.c_str() << std::endl;
-  std::cout << "numTokenComponents " << numTokenComponents << std::endl;
-#endif
+  LOG4CXX_DEBUG(DMlogger,"tokenStr is " << tokenStr.c_str());
+  LOG4CXX_DEBUG(DMlogger,"numTokenComponents " << numTokenComponents);
   if (numTokenComponents>1)
     {
-#ifdef DEBUG
+// #ifdef DEBUG (can we check Log4cxx debug conditionally ?)
       for (size_t i=0;i<numTokenComponents;i++) {
-        std::cout << "tokenStrComponents[" << i << "] is "
-                  << tokenStrComponents[i]
-                  << std::endl;
+        LOG4CXX_DEBUG(DMlogger,"tokenStrComponents[" << i << "] is "
+                      << tokenStrComponents[i]);
       }
-#endif
+// #endif
       if (numTokenComponents == 2)
         {
           declStr = tokenStrComponents[0];
@@ -235,10 +231,8 @@ DeclarationManager::GetDeclarationInfo(const std::string& tokenStr)
     }
   else
     {
-#ifdef DEBUG
-      std::cout << "Searching for default token declarations : "
-                << tokenStr.c_str() << std::endl;
-#endif // DEBUG
+      LOG4CXX_DEBUG(DMlogger,"Searching for default token declarations : "
+                    << tokenStr.c_str());
       DIC_ConstIter iter;
       iter = _diContainer.find(tokenStr);
       if (iter != _diContainer.end()) {
@@ -314,9 +308,7 @@ DeclarationManager::DeclarationInfo::StorageType
 DeclarationManager::String2Type(const std::string& typeStr)
 {
   DeclarationInfo::StorageType result = DeclarationInfo::UNKNOWN_TYPE;
-#ifdef DEBUG
-  std::cout << "String2Type typeStr = " << typeStr.c_str() << std::endl;
-#endif
+  LOG4CXX_DEBUG(DMlogger,"String2Type typeStr = " << typeStr.c_str());
   if (typeStr == std::string("float"))
   {
     result = DeclarationInfo::FLOAT;
@@ -340,9 +332,7 @@ DeclarationManager::String2Type(const std::string& typeStr)
   else if (typeStr == std::string("vector"))
   {
     result = DeclarationInfo::VECTOR;
-#ifdef DEBUG
-    std::cout << "String2Type found VECTOR\n";
-#endif
+    LOG4CXX_DEBUG(DMlogger,"String2Type found VECTOR");
   }
   else if (typeStr == std::string("normal"))
   {
