@@ -27,7 +27,7 @@ ENDIF (PYTHON3)
 
 # RIBClient
 SWIG_ADD_MODULE ( ribclient python RIBClient.i ParameterList.cpp )
-SWIG_LINK_LIBRARIES ( ribclient ${RIBCLIENT_LIBRARIES} utils ${PYTHON_LIBRARIES} )
+SWIG_LINK_LIBRARIES ( ribclient ${RIBCLIENT_LIBRARIES} utils ${PYTHON_LIBRARIES} log4cxx)
 # RXClient
 SWIG_ADD_MODULE ( rxclient python RXClient.i ParameterList.cpp )
 SWIG_LINK_LIBRARIES ( rxclient ${RIBCLIENT_LIBRARIES} utils ${PYTHON_LIBRARIES} )
