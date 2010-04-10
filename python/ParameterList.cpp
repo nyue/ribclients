@@ -3,11 +3,13 @@
 // Logging
 // include log4cxx header files.
 #include <log4cxx/logger.h>
-#include <log4cxx/basicconfigurator.h>
-#include <log4cxx/propertyconfigurator.h>
+// #include <log4cxx/basicconfigurator.h>
+// #include <log4cxx/propertyconfigurator.h>
+#include <log4cxx/xml/domconfigurator.h>
 #include <log4cxx/helpers/exception.h>
 
 using namespace log4cxx;
+using namespace log4cxx::xml;
 using namespace log4cxx::helpers;
 // Define a static logger variable so that it references the
 // Logger instance named "PythonParameterList".
@@ -50,6 +52,8 @@ VII_Python_str_AsChar(PyObject *str)
 ParameterList::ParameterList(DeclarationManager& dm)
   : TParameterList<PyObject*>(dm)
 {
+    // Load Log4cxx configuration file
+    DOMConfigurator::configure("Log4cxxConfig.xml");
 }
 
 ParameterList::~ParameterList()
@@ -71,7 +75,7 @@ bool ParameterList::ProcessParameterList(PyObject* parameterlist)
 {
   if (parameterlist == Py_None)
     return true;
-  // std::cout << "ProcessParameterList" << std::endl;
+  LOG4CXX_DEBUG(logger,"ProcessParameterList");
   if (parameterlist != Py_None) {
     // std::cout << "parameterlist is not None" << std::endl;
     if (PyDict_Check(parameterlist)) {
