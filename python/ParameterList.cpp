@@ -3,13 +3,11 @@
 // Logging
 // include log4cxx header files.
 #include <log4cxx/logger.h>
-// #include <log4cxx/basicconfigurator.h>
-// #include <log4cxx/propertyconfigurator.h>
-#include <log4cxx/xml/domconfigurator.h>
+#include <log4cxx/basicconfigurator.h>
 #include <log4cxx/helpers/exception.h>
 
 using namespace log4cxx;
-using namespace log4cxx::xml;
+// using namespace log4cxx::xml;
 using namespace log4cxx::helpers;
 // Define a static logger variable so that it references the
 // Logger instance named "PythonParameterList".
@@ -52,8 +50,12 @@ VII_Python_str_AsChar(PyObject *str)
 ParameterList::ParameterList(DeclarationManager& dm)
   : TParameterList<PyObject*>(dm)
 {
-    // Load Log4cxx configuration file
-    DOMConfigurator::configure("Log4cxxConfig.xml");
+  log4cxx::BasicConfigurator::configure();
+#ifdef DEBUG
+  log4cxx::Logger::getRootLogger()->setLevel(log4cxx::Level::getAll()); 
+#else
+  log4cxx::Logger::getRootLogger()->setLevel(log4cxx::Level::getWarn()); 
+#endif // DEBUG
 }
 
 ParameterList::~ParameterList()
