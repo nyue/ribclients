@@ -99,6 +99,9 @@ public:
         case VECTOR:
           os << "vector";
           break;
+        case COLOR:
+          os << "color";
+          break;
         case POINT:
           os << "point";
           break;
