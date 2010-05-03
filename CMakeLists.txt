@@ -5,9 +5,9 @@ PROJECT ( ribclients )
 
 INCLUDE (FindSWIG)
 INCLUDE (UseSWIG)
-# INCLUDE (FindLog4cxx)
+INCLUDE (CTest)
 
-ENABLE_TESTING()
+# INCLUDE (FindLog4cxx)
 
 IF ( CMAKE_BUILD_TYPE MATCHES "Debug")
     ADD_DEFINITIONS ( -DDEBUG )
