@@ -5,7 +5,9 @@ PROJECT ( ribclients )
 
 INCLUDE (FindSWIG)
 INCLUDE (UseSWIG)
-INCLUDE (FindLog4cxx)
+# INCLUDE (FindLog4cxx)
+
+ENABLE_TESTING()
 
 IF ( CMAKE_BUILD_TYPE MATCHES "Debug")
     ADD_DEFINITIONS ( -DDEBUG )
@@ -34,22 +36,10 @@ ELSE ( RENDERER MATCHES "3Delight" )
 ENDIF ( RENDERER MATCHES "PRMan")
 
 INCLUDE_DIRECTORIES ( ./utils )
-# INCLUDE_DIRECTORIES ( $ENV{CPPUNIT_ROOT}/include )
 
-# LINK_DIRECTORIES ( $ENV{CPPUNIT_ROOT}/lib )
+ADD_SUBDIRECTORY ( utils )
 
-ADD_LIBRARY ( utils STATIC
-  utils/DeclarationManager.cpp
-  utils/BasisManager.cpp
-  utils/FilterFuncManager.cpp
-  utils/LightHandleManager.cpp
-  utils/ObjectHandleManager.cpp
-  utils/ContextHandleManager.cpp
-  utils/ArchiveHandleManager.cpp
-  utils/ErrorHandlerManager.cpp
-  )
-
-# ADD_SUBDIRECTORY ( java )
+ADD_SUBDIRECTORY ( java )
 
 ADD_SUBDIRECTORY ( python )
 
