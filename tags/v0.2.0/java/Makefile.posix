@@ -1,0 +1,94 @@
+.SUFFIXES: .cpp .obj .i
+
+OSNAME		= $(shell uname)
+
+include ../../RIBClientMakefileRules.inc
+
+SWIG			= swig
+VPATH			= .
+JAVA			= java
+JAVAC			= javac
+JAVAH			= javah
+JAR			= jar
+
+ifneq (,$(findstring CYGWIN_NT,$(OSNAME)))
+  CLASSPATH_SEP = ;
+  CC		=
+  CXX		= cl.exe
+  LINK		= link.exe
+  CFLAGS	=
+  CXXFLAGS	= /EHa /MT $(RMAN_DEF)
+  INCLUDES	= /I"..\utils" $(RMAN_INC) /I"$(JAVA_HOME)\include" /I"$(JAVA_HOME)\include\win32" /I"$(PSDKHOME)\include"
+  LIBRARIES	= /libpath:"$(PSDKHOME)\lib" /libpath:"..\utils" libutils.lib $(RMAN_LIB)
+  EXT		= dll
+  OEXT		= obj
+  SHAREFLAG	= /DLL
+  LIBOUT	= /OUT:
+  PLATFORM      = WIN32
+else
+  CLASSPATH_SEP = :
+  CC		= gcc
+  CXX		= g++
+  LINK		= g++
+  CFLAGS	=
+  CXXFLAGS	= -fPIC $(RMAN_DEF)
+ifeq ($(DEBUG),1)
+  CXXFLAGS += -ggdb3
+endif
+  OEXT		= o
+  LIBOUT	= -o # There is a space after the character 'o', keep it there
+  LIBPREFIX	= lib
+  ifneq (,$(findstring Linux,$(OSNAME)))
+    INCLUDES	= -I. -I../utils $(RMAN_INC) -I$(JAVA_HOME)/include -I$(JAVA_HOME)/include/linux -I$(BOOST_INCLUDE)
+    LIBRARIES	= -L../utils -lutils $(RMAN_LIB)
+    EXT		= so
+    SHAREFLAG	= -shared
+    PLATFORM    = LINUX
+  else
+    INCLUDES	= -I. -I../utils $(RMAN_INC) -I/System/Library/Frameworks/JavaVM.framework/Headers -I$(BOOST_INCLUDE)
+    LIBRARIES	= -L../utils -lutils $(RMAN_LIB)
+    EXT		= jnilib
+    SHAREFLAG	= -dynamiclib
+    PLATFORM    = DARWIN
+  endif
+endif
+
+.cpp.$(OEXT):
+	$(CXX) $(INCLUDES) $(CXXFLAGS) -c $<
+
+SOURCES = 			\
+	RIBClient.cpp		\
+	ParameterList.cpp
+
+CPP_OBJECTS = $(SOURCES:.cpp=.$(OEXT))
+
+all: $(LIBPREFIX)ribclient.$(EXT)
+
+RIBClient_wrap.cxx : ./RIBClient.i
+	$(SWIG) -o $@ -c++ -java $(RMAN_SWIG_DEF) -I../utils $<
+
+RIBClient_wrap.$(OEXT) : RIBClient_wrap.cxx
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $<
+
+$(LIBPREFIX)ribclient.$(EXT): RIBClient_wrap.$(OEXT) ParameterList.$(OEXT)
+	$(LINK) $(SHAREFLAG) $? $(LIBRARIES) $(LIBOUT)$@
+
+ribclient.jar:
+	$(JAVAC) ribclient.java ribclientConstants.java ribclientJNI.java
+	$(JAR) cvf $@ ribclient.class ribclientConstants.class ribclientJNI.class
+
+test: ribclient.jar
+	$(JAVAC) -cp ribclient.jar\$(CLASSPATH_SEP). testribclient.java
+	$(JAVA) -cp ribclient.jar\$(CLASSPATH_SEP). testribclient
+	cat testribclient.rib
+
+smalltest: ribclient.jar
+	$(JAVAC) -cp ribclient.jar\$(CLASSPATH_SEP). smalltest.java
+	$(JAVA) -cp ribclient.jar\$(CLASSPATH_SEP). smalltest
+	cat smalltest.rib
+
+package: $(LIBPREFIX)ribclient.$(EXT) demoribclient.java
+	tar -cvf - $? | gzip -9 > javaribclient_$(PLATFORM)_$(RIBCLIENT).tgz
+
+clean:
+	$(RM) *~ *.$(OEXT) *.$(EXT) RIBClient.h *.class *.lib *_wrap.cxx SWIGTYPE* *.rib *.a ribclient.java ribclientConstants.java ribclientJNI.java *.jar
