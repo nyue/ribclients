@@ -205,6 +205,51 @@
 # Procedural Insight additional token
 %constant const char* MOTIONFACTOR = "motionfactor";
 %constant const char* FILENAME = "filename";
+# Visual Information Insight additional token
+%constant const char* CS = "Cs";
+%constant const char* OS = "Os";
+# Error constants
+%constant const int E_NOERROR                   =   0;
+%constant const int E_NOMEM                     =   1; /* Out of memory */
+%constant const int E_SYSTEM                    =   2; /* Miscellaneous system error */
+%constant const int E_NOFILE                    =   3; /* File nonexistent */
+%constant const int E_BADFILE                   =   4; /* Bad file format */
+%constant const int E_VERSION                   =   5; /* File version mismatch */
+%constant const int E_DISKFULL                  =   6; /* Target disk is full */
+%constant const int E_INCAPABLE                 =  11; /* Optional RI feature */
+%constant const int E_UNIMPLEMENT               =  12; /* Unimplemented feature */
+%constant const int E_LIMIT                     =  13; /* Arbitrary program limit */
+%constant const int E_BUG                       =  14; /* Probably a bug in renderer */
+%constant const int E_NOTSTARTED                =  23; /* RiBegin not called */
+%constant const int E_NESTING                   =  24; /* Bad begin-end nesting */
+%constant const int E_NOTOPTIONS                =  25; /* Invalid state for options */
+%constant const int E_NOTATTRIBS                =  26; /* Invalid state for attribs */
+%constant const int E_NOTPRIMS                  =  27; /* Invalid state for primitives */
+%constant const int E_ILLSTATE                  =  28; /* Other invalid state */
+%constant const int E_BADMOTION                 =  29; /* Badly formed motion block */
+%constant const int E_BADSOLID                  =  30; /* Badly formed solid block */
+%constant const int E_BADTOKEN                  =  41; /* Invalid token for request */
+%constant const int E_RANGE                     =  42; /* Parameter out of range */
+%constant const int E_CONSISTENCY               =  43; /* Parameters inconsistent */
+%constant const int E_BADHANDLE                 =  44; /* Bad object/light handle */
+%constant const int E_NOSHADER                  =  45; /* Can't load requested shader */
+%constant const int E_MISSINGDATA               =  46; /* Required parameters not provided */
+%constant const int E_SYNTAX                    =  47; /* Declare type syntax error */
+%constant const int E_TOKENREDECLARED           =  48; /* Redeclaration of token */
+%constant const int E_MATH                      =  61; /* Zerodivide, noninvert matrix, etc. */
+%constant const int E_BADATTRIB                 = 140; /* Unsupported attribute */
+%constant const int E_BADOPTION                 = 141; /* Unsupported option */
+%constant const int E_SPACEREDECLARED           = 142; /* Redeclaration of space */
+%constant const int E_NODISPLAY                 = 143; /* Can't load requested display server */
+%constant const int E_ERRRERTOOBID              = 144; /* Image resolution too big */
+%constant const int E_ERRBADSHADERPARAM         = 145; /* Parameter is not in shader param list */
+%constant const int E_ERRSHADERPARAMMISMATCH    = 146; /* Value for parameter does not match declaration */
+%constant const int E_ERRBADARRAYACCESSINSHADER = 147; /* Invalid array index done in a shader */
+%constant const int E_SHADER_PRINTF             = 199; /* output of a shader's printf() */
+%constant const int E_INFO                      =   0; /* Rendering stats and other info */
+%constant const int E_WARNING                   =   1; /* Something seems wrong, maybe okay */
+%constant const int E_ERROR                     =   2; /* Problem. Results may be wrong */
+%constant const int E_SEVERE                    =   3; /* So bad you should probably abort */
 
 #if defined (PRMAN_RIBCLIENT)
 %constant const char* RIBCLIENT = "PRMan";
