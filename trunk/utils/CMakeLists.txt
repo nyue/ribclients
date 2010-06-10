@@ -42,6 +42,6 @@ ADD_EXECUTABLE ( unitTest
   #  ./tests/ViewTransformTestSuite.cpp // Need to migrate code to use IMath
   )
 
-TARGET_LINK_LIBRARIES ( unitTest utils log4cxx cppunit ${RIBCLIENT_LIBRARIES} )
+TARGET_LINK_LIBRARIES ( unitTest utils ${LOG4CXX_LIBRARIES} apr-1 aprutil-1 cppunit ${RIBCLIENT_LIBRARIES} )
 
 ADD_TEST ( UnitTest unitTest )
