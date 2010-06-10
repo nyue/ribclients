@@ -134,6 +134,13 @@ void DeclarationManager::InitializeDefaultDeclarations()
   f_str = "string";
   Declare(p_str,f_str);
 
+  p_str = "Cs";
+  f_str = "color";
+  Declare(p_str,f_str);
+  p_str = "Os";
+  f_str = "color";
+  Declare(p_str,f_str);
+
   // Width/ConstantWidth
   p_str = "width";
   f_str = "float";
