@@ -2,6 +2,11 @@
 
 PROJECT ( utils )
 
+FIND_PACKAGE( Boost COMPONENTS unit_test_framework )
+
+INCLUDE_DIRECTORIES ( ${Boost_INCLUDE_DIRS} )
+LINK_DIRECTORIES ( ${Boost_LIBRARY_DIRS} )
+
 INCLUDE_DIRECTORIES (
   $ENV{CPPUNIT_ROOT}/include
   $ENV{OPENEXR_ROOT}/include
@@ -42,6 +47,16 @@ ADD_EXECUTABLE ( unitTest
   #  ./tests/ViewTransformTestSuite.cpp // Need to migrate code to use IMath
   )
 
+ADD_EXECUTABLE ( boostTest
+  ./tests/BoostTestMain.cpp
+  # Note: All the test code are in *.tcc templatize form and include in the
+  # main entry BoostTestMain.cpp
+  )
+
 TARGET_LINK_LIBRARIES ( unitTest utils log4cxx apr-1 aprutil-1 cppunit ${RIBCLIENT_LIBRARIES} )
 
+TARGET_LINK_LIBRARIES ( boostTest utils ${RIBCLIENT_LIBRARIES} ${Boost_LIBRARIES} )
+
 ADD_TEST ( UnitTest unitTest )
+
+ADD_TEST ( BoostTest boostTest )
