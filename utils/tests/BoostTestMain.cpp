@@ -1,4 +1,10 @@
 #define BOOST_TEST_MODULE MyBoostTestModule
 #include "ArchiveHandleManagerTestCase.tcc"
+#include "BasisManagerTestCase.tcc"
+#include "ContextHandleManagerTestCase.tcc"
 #include "DeclarationManagerTestCase.tcc"
-
+#include "ErrorHandlerManagerTestCase.tcc"
+#include "FilterFuncManagerTestCase.tcc"
+#include "LightHandleManagerTestCase.tcc"
+#include "ObjectHandleManagerTestCase.tcc"
+#include "TParameterListTestCase.tcc"
