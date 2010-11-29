@@ -1,13 +1,3 @@
-/*
-	LICENSE : Code Project Open License
-	http://www.codeproject.com/info/cpol10.aspx
-
-	Project location :
-
-	http://www.codeproject.com/KB/cpp/minimalist_logger.aspx
-
-*/
-
 #pragma once
 
 /** \file logger.h
@@ -57,7 +47,9 @@ version 2.0
 #include <fstream>
 #include <boost/thread.hpp>
 #include <boost/interprocess/detail/os_thread_functions.hpp> // for native thread id
+#ifdef WIN32
 #include <boost/detail/interlocked.hpp>
+#endif // WIN32
 #include <boost/date_time/posix_time/posix_time.hpp>
 namespace pt = boost::posix_time;
 #include <boost/lexical_cast.hpp>
@@ -115,12 +107,12 @@ namespace logging
 
 			void set_minimal_category(Category cat)
 			{
-				BOOST_INTERLOCKED_EXCHANGE(&minimal_category_, long(cat));
+				BOOST_INTERLOCKED_EXCHANGE_POINTER(&minimal_category_, long(cat));
 			}
 
 			void set_buffer_size(size_t buf_size)
 			{
-				BOOST_INTERLOCKED_EXCHANGE(&buf_size_, buf_size);
+				BOOST_INTERLOCKED_EXCHANGE_POINTER(&buf_size_, buf_size);
 			}
 
 			void log(Category category, char const* function_name, char const* format, va_list va)
