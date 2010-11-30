@@ -1,18 +1,6 @@
 #include "ParameterList.h"
 
-// Logging
-// include log4cxx header files.
-#include <log4cxx/logger.h>
-#include <log4cxx/basicconfigurator.h>
-#include <log4cxx/helpers/exception.h>
-
-using namespace log4cxx;
-// using namespace log4cxx::xml;
-using namespace log4cxx::helpers;
-// Define a static logger variable so that it references the
-// Logger instance named "PythonParameterList".
-LoggerPtr logger(Logger::getLogger("PythonParameterList"));
-
+#include <vii_logger.h>
 
 // Python version specific handling
 
@@ -50,12 +38,6 @@ VII_Python_str_AsChar(PyObject *str)
 ParameterList::ParameterList(DeclarationManager& dm)
   : TParameterList<PyObject*>(dm)
 {
-  log4cxx::BasicConfigurator::configure();
-#ifdef DEBUG
-  log4cxx::Logger::getRootLogger()->setLevel(log4cxx::Level::getAll()); 
-#else
-  log4cxx::Logger::getRootLogger()->setLevel(log4cxx::Level::getWarn()); 
-#endif // DEBUG
 }
 
 ParameterList::~ParameterList()
@@ -77,16 +59,16 @@ bool ParameterList::ProcessParameterList(PyObject* parameterlist)
 {
   if (parameterlist == Py_None)
     return true;
-  LOG4CXX_DEBUG(logger,"ProcessParameterList");
+  VII_LOG(INFO,"ProcessParameterList");
   if (parameterlist != Py_None) {
-    LOG4CXX_DEBUG(logger,"parameterlist is not None");
+    VII_LOG(INFO,"parameterlist is not None");
     if (PyDict_Check(parameterlist)) {
       PyObject* pkey;
       PyObject* pvalue;
       int dictIndex = 0;
       Py_ssize_t ppos = 0; // Initialize to first item
       int nDictItems = PyDict_Size(parameterlist);
-      LOG4CXX_DEBUG(logger,"nDictItems [NICHOLAS] = " << nDictItems);
+      VII_LOG(INFO,"nDictItems [NICHOLAS] = " << nDictItems);
       if (nDictItems == 0)
 	return true; // Nothing to do
       Init(nDictItems);
@@ -117,7 +99,7 @@ bool ParameterList::ProcessParameterList(PyObject* parameterlist)
 #else
         char *keyString = PyString_AsString(pkey);
 #endif // PY_VERSION_HEX >= 0x03000000
-	LOG4CXX_DEBUG(logger,"Key item "
+	VII_LOG(INFO,"Key item "
                       << dictIndex
                       << " is a string object = "
                       << keyString
@@ -154,7 +136,7 @@ std::ostream& operator <<(std::ostream &os,
 	 << "_tokens[" << i << "] is " << obj._tokens[i]
 	 << std::endl;
     }
-  LOG4CXX_DEBUG(logger, "DONE");
+  VII_LOG(INFO, "DONE");
   return os;
 }
 
@@ -162,14 +144,14 @@ void ParameterList::ExtractValue(PyObject* pvalue,
 				 int dictIndex,
 				 const char* keyString)
 {
-  LOG4CXX_DEBUG(logger,"ExtractValue(" << keyString << ") start");
+  VII_LOG(INFO,"ExtractValue(" << keyString << ") start");
   if (!PyList_Check(pvalue))
     return;
   // From the token, find out what data type to expect
   DeclarationManager::DeclarationInfo di = _dm.GetDeclarationInfo(keyString);
 
   int numElements = PyList_Size(pvalue);
-  LOG4CXX_DEBUG(logger, "Num items in pvalue = " << numElements );
+  VII_LOG(INFO, "Num items in pvalue = " << numElements );
 
   // Prepare the correct storage type since we know what to expect
   std::vector<RtFloat> floatPlaceHolder;
