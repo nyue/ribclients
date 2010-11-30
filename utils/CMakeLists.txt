@@ -33,19 +33,19 @@ ADD_LIBRARY ( utils STATIC
   ArchiveHandleManager.cpp
   ErrorHandlerManager.cpp )
 
-ADD_EXECUTABLE ( unitTest
-  ./tests/main.cpp
-  ./tests/ArchiveHandleManagerTestCase.cpp
-  ./tests/BasisManagerTestCase.cpp
-  ./tests/ContextHandleManagerTestCase.cpp
-  ./tests/DeclarationManagerTestCase.cpp
-  ./tests/ErrorHandlerManagerTestCase.cpp
-  ./tests/FilterFuncManagerTestCase.cpp
-  ./tests/LightHandleManagerTestCase.cpp
-  ./tests/ObjectHandleManagerTestCase.cpp
-  ./tests/TParameterListTestCase.cpp
-  #  ./tests/ViewTransformTestSuite.cpp // Need to migrate code to use IMath
-  )
+# ADD_EXECUTABLE ( unitTest
+#   ./tests/main.cpp
+#   ./tests/ArchiveHandleManagerTestCase.cpp
+#   ./tests/BasisManagerTestCase.cpp
+#   ./tests/ContextHandleManagerTestCase.cpp
+#   ./tests/DeclarationManagerTestCase.cpp
+#   ./tests/ErrorHandlerManagerTestCase.cpp
+#   ./tests/FilterFuncManagerTestCase.cpp
+#   ./tests/LightHandleManagerTestCase.cpp
+#   ./tests/ObjectHandleManagerTestCase.cpp
+#   ./tests/TParameterListTestCase.cpp
+#   #  ./tests/ViewTransformTestSuite.cpp // Need to migrate code to use IMath
+#   )
 
 ADD_EXECUTABLE ( boostTest
   ./tests/BoostTestMain.cpp
@@ -53,10 +53,10 @@ ADD_EXECUTABLE ( boostTest
   # main entry BoostTestMain.cpp
   )
 
-TARGET_LINK_LIBRARIES ( unitTest utils log4cxx apr-1 aprutil-1 cppunit ${RIBCLIENT_LIBRARIES} )
+# TARGET_LINK_LIBRARIES ( unitTest utils log4cxx apr-1 aprutil-1 cppunit ${RIBCLIENT_LIBRARIES} )
 
-TARGET_LINK_LIBRARIES ( boostTest utils log4cxx apr-1 aprutil-1 ${RIBCLIENT_LIBRARIES} ${Boost_LIBRARIES} )
+TARGET_LINK_LIBRARIES ( boostTest utils ${RIBCLIENT_LIBRARIES} ${Boost_LIBRARIES} )
 
-ADD_TEST ( UnitTest unitTest )
+# ADD_TEST ( UnitTest unitTest )
 
 ADD_TEST ( BoostTest boostTest )
