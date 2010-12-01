@@ -8,6 +8,9 @@
 
 DeclarationManager::DeclarationManager()
 {
+
+  InitializeDefaultDeclarations();
+
 #ifdef DEBUG
   DebugDumpDefinedDeclarations();
 #endif // DEBUG
