@@ -2,7 +2,7 @@
 
 OSNAME		= $(shell uname)
 
-include ../../RIBClientMakefileRules.inc
+include ../RIBClientMakefileRules.inc
 
 ifeq ($(VERIFY),1)
   RMAN_DEF += -DVERIFY_RIBCLIENT
