@@ -2,7 +2,7 @@
 
 OSNAME		= $(shell uname)
 
-include ../../RIBClientMakefileRules.inc
+include ../RIBClientMakefileRules.inc
 
 SWIG			= swig
 VPATH			= .
@@ -25,12 +25,12 @@ else
   CXX		= g++
   LINK		= g++
   CFLAGS	=
-  CXXFLAGS	= -ggdb3 $(RMAN_DEF)
+  CXXFLAGS	= -fPIC $(RMAN_DEF)
   OEXT		= o
   LIBOUT	= -o # There is a space after the character 'o', keep it there
   LIBPREFIX	= 
   ifneq (,$(findstring Linux,$(OSNAME)))
-    INCLUDES	= -I../utils $(RMAN_INC) -I$(BOOST_INCLUDE) -I$(PYTHON_INCLUDE)
+    INCLUDES	= -I../utils $(RMAN_INC) -I. -I$(BOOST_INCLUDE) -I$(PYTHON_INCLUDE)
     LIBRARIES	= -L../utils -lutils $(RMAN_LIB)
     EXT		= so
     SHAREFLAG	= -shared
@@ -63,7 +63,7 @@ utils:
 	(cd ../utils;make clean all)
 
 RIBClient_wrap.cxx : RIBClient.i
-	$(SWIG) -I../utils -o $@ -c++ -python $(RMAN_SWIG_DEF) $<
+	$(SWIG) -classic -I../utils -o $@ -c++ -python $(RMAN_SWIG_DEF) $<
 
 RIBClient_wrap.$(OEXT) : RIBClient_wrap.cxx
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $<
