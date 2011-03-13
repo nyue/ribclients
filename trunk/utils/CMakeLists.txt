@@ -12,7 +12,6 @@ INCLUDE_DIRECTORIES (
   $ENV{OPENEXR_ROOT}/include
   $ENV{ILMBASE_ROOT}/include
   $ENV{DELIGHT}/include
-  /usr/share/swig1.3
   $ENV{PYTHON_INCLUDE}
   $ENV{RUBY_INCLUDE}
   $ENV{JAVA_INCLUDE} )
