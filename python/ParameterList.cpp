@@ -1,6 +1,8 @@
 #include "ParameterList.h"
 
-#include <vii_logger.h>
+// Google Logging Framework
+#include <glog/logging.h>
+// #include <vii_logger.h>
 
 // Python version specific handling
 
@@ -59,16 +61,16 @@ bool ParameterList::ProcessParameterList(PyObject* parameterlist)
 {
   if (parameterlist == Py_None)
     return true;
-  VII_LOG(INFO,"ProcessParameterList");
+  DLOG(INFO) << "ProcessParameterList";
   if (parameterlist != Py_None) {
-    VII_LOG(INFO,"parameterlist is not None");
+      DLOG(INFO) << "parameterlist is not None";
     if (PyDict_Check(parameterlist)) {
       PyObject* pkey;
       PyObject* pvalue;
       int dictIndex = 0;
       Py_ssize_t ppos = 0; // Initialize to first item
       int nDictItems = PyDict_Size(parameterlist);
-      VII_LOG(INFO,"nDictItems [NICHOLAS] = " << nDictItems);
+      DLOG(INFO) << "nDictItems [NICHOLAS] = " << nDictItems;
       if (nDictItems == 0)
 	return true; // Nothing to do
       Init(nDictItems);
@@ -99,11 +101,11 @@ bool ParameterList::ProcessParameterList(PyObject* parameterlist)
 #else
         char *keyString = PyString_AsString(pkey);
 #endif // PY_VERSION_HEX >= 0x03000000
-	VII_LOG(INFO,"Key item "
+	DLOG(INFO) << "Key item"
                       << dictIndex
                       << " is a string object = "
                       << keyString
-                      << std::endl);
+                      << std::endl;
 	_tokenStorage[dictIndex] = keyString;
 
         // Display value
@@ -136,7 +138,7 @@ std::ostream& operator <<(std::ostream &os,
 	 << "_tokens[" << i << "] is " << obj._tokens[i]
 	 << std::endl;
     }
-  VII_LOG(INFO, "DONE");
+  DLOG(INFO) <<  "DONE";
   return os;
 }
 
@@ -144,14 +146,14 @@ void ParameterList::ExtractValue(PyObject* pvalue,
 				 int dictIndex,
 				 const char* keyString)
 {
-  VII_LOG(INFO,"ExtractValue(" << keyString << ") start");
+    DLOG(INFO) << "ExtractValue(" << keyString << ") start";
   if (!PyList_Check(pvalue))
     return;
   // From the token, find out what data type to expect
   DeclarationManager::DeclarationInfo di = _dm.GetDeclarationInfo(keyString);
 
   int numElements = PyList_Size(pvalue);
-  VII_LOG(INFO, "Num items in pvalue = " << numElements );
+  DLOG(INFO) <<  "Num items in pvalue = " << numElements ;
 
   // Prepare the correct storage type since we know what to expect
   std::vector<RtFloat> floatPlaceHolder;
