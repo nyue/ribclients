@@ -404,8 +404,8 @@ end
 
 r = Ribclient
 
-filename = "nicholas.rib"
-display = "nicholas.tif"
+filename = "testribclient.rib"
+display = "testribclient.tif"
 eocdisplay = "+eoc.tif"
 r.Begin(filename)
 # Display options
@@ -465,9 +465,9 @@ r.AttributeBegin
 r.Illuminate(lha,0)
 # r.Color([1,0,1])
 # r.Opacity([0.5,0,0.7])
-# r.MakeTexture('grid.tif','grid.tx',
-#              Ribclient::PERIODIC,Ribclient::PERIODIC,
-#              'triangle',1.0,1.0,nil)
+r.MakeTexture('grid.tif','grid.tx',
+              Ribclient::PERIODIC,Ribclient::PERIODIC,
+              Ribclient::TRIANGLEFILTER,1.0,1.0,nil)
 r.Surface(Ribclient::PLASTIC,nil)
 # r.Surface(Ribclient::PAINTEDPLASTIC,[Ribclient::TEXTURENAME,["grid.tx"]])
 # r.Surface('LGParquetPlank',nil)
