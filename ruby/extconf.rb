@@ -4,6 +4,13 @@ dir_config('utils')
 # dir_config('vecmath')
 have_header('ri.h')
 
+
+puts "NICHOLAS ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ"
+puts CONFIG["CFLAGS"]
+puts CONFIG["LDSHARED"]
+puts "NICHOLAS ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ"
+
+
 if (RUBY_PLATFORM.include? "mswin")
   have_library('utils')
   if (ENV["USE_PRMAN"])
@@ -69,13 +76,15 @@ if (RUBY_PLATFORM.include? "mswin")
                            "-incremental:no -nodefaultlib:msvcrtd") # 
 #  $LDFLAGS << ' -link -nodefaultlib:msvcrtd '
 #  puts $LDFLAGS
+else
+  $LDFLAGS << ' -headerpad_max_install_names '
 end
 
 #puts "NICHOLAS ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ"
 #puts CONFIG["LDSHARED"]
 #puts CONFIG["CFLAGS"]
 #puts CONFIG["DLDFLAGS"]
-#puts CONFIG["LDFLAGS"]
+puts CONFIG["LDFLAGS"]
 #puts "NICHOLAS ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ"
 
 create_makefile("ribclient")
