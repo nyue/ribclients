@@ -2,6 +2,10 @@
 
 PROJECT ( utils )
 
+IF (WIN32)
+  SET (CMAKE_BUILD_TYPE "Release")
+ENDIF (WIN32)
+
 FIND_PACKAGE( Boost COMPONENTS unit_test_framework )
 
 INCLUDE_DIRECTORIES ( ${Boost_INCLUDE_DIRS} )
