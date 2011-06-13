@@ -2,7 +2,7 @@
 /*
   Visual Information Insight copyright notice stub
  */
-
+#ifdef USE_VII_LOGGER
 #ifndef VII_LOGGER
 #define VII_LOGGER
 
@@ -67,3 +67,4 @@ inline static const char* LogLevel2Str(LogLevel level)
 
 #endif /* VII_LOGGER */
 
+#endif // USE_VII_LOGGER

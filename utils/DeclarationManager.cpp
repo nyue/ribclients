@@ -4,7 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <vii_logger.h>
+// Google Logging Framework                                                                                                     
+#include <glog/logging.h>
 
 DeclarationManager::DeclarationManager()
 {
@@ -29,17 +30,17 @@ void DeclarationManager::Declare(const std::string& typeName,
   DIC_Iter i = _diContainer.find(typeName);
   if (i != _diContainer.end() )
   {
-    VII_LOG(INFO,"Re-declaring " << typeName.c_str());
+    DLOG(INFO) << "Re-declaring " << typeName.c_str();
     // Re-declaration
     i->second = di;
   }
   else
   {
-    VII_LOG(INFO,"Declaring " << typeName.c_str());
+    DLOG(INFO) << "Declaring " << typeName.c_str();
     // New declaration
     _diContainer[typeName] = di;
   }
-  VII_LOG(INFO,"_diContainer has " << _diContainer.size() << " items ");
+  DLOG(INFO) << "_diContainer has " << _diContainer.size() << " items ";
 }
 
 void DeclarationManager::InitializeDefaultDeclarations()
@@ -142,8 +143,8 @@ void
 DeclarationManager::MakeDeclarationInfo(const std::string& typeDeclaration,
                                         DeclarationInfo& di)
 {
-  VII_LOG(INFO,"MakeDeclarationInfo start processing \""
-                << typeDeclaration.c_str() << "\"");
+  DLOG(INFO) << "MakeDeclarationInfo start processing \""
+             << typeDeclaration.c_str() << "\"";
   std::string delimiters(" ");
   
   std::vector<std::string> tokens =
@@ -155,17 +156,17 @@ DeclarationManager::MakeDeclarationInfo(const std::string& typeDeclaration,
   if (numTokens == 1)
   {
     di._class = DeclarationInfo::VARYING;
-    VII_LOG(INFO,"numTokens == 1, assuming VARYING, type = "
-                  << tokens[0].c_str());
+    DLOG(INFO) << "numTokens == 1, assuming VARYING, type = "
+               << tokens[0].c_str();
     typeString = tokens[0];
   }
   else if (numTokens == 2)
   {
     di._class = String2Class(tokens[0]);
-    VII_LOG(INFO,"numTokens == 2, detail = "
-                  << tokens[0].c_str()
-                  << ", type = "
-                  << tokens[1].c_str());
+    DLOG(INFO) << "numTokens == 2, detail = "
+               << tokens[0].c_str()
+               << ", type = "
+               << tokens[1].c_str();
     typeString = tokens[1];
   } else
     return;
@@ -191,7 +192,7 @@ DeclarationManager::MakeDeclarationInfo(const std::string& typeDeclaration,
     // printf("MakeDeclarationInfo %s[%d]\n",typeName.c_str(),di._size);
     di._type = String2Type(typeName);
   }
-  VII_LOG(INFO,"MakeDeclarationInfo : numTokens " << numTokens);
+  DLOG(INFO) << "MakeDeclarationInfo : numTokens " << numTokens;
 }
 
 DeclarationManager::DeclarationInfo
@@ -202,14 +203,14 @@ DeclarationManager::GetDeclarationInfo(const std::string& tokenStr)
   std::vector< std::string > tokenStrComponents = TokenizeDeclaration(tokenStr,delimiter);
   size_t numTokenComponents = tokenStrComponents.size();
   std::string declStr;
-  VII_LOG(INFO,"tokenStr is " << tokenStr.c_str());
-  VII_LOG(INFO,"numTokenComponents " << numTokenComponents);
+  DLOG(INFO) << "tokenStr is " << tokenStr.c_str();
+  DLOG(INFO) << "numTokenComponents " << numTokenComponents;
   if (numTokenComponents>1)
     {
 // #ifdef DEBUG (can we check Log4cxx debug conditionally ?)
       for (size_t i=0;i<numTokenComponents;i++) {
-        VII_LOG(INFO,"tokenStrComponents[" << i << "] is "
-                      << tokenStrComponents[i]);
+        DLOG(INFO) << "tokenStrComponents[" << i << "] is "
+                   << tokenStrComponents[i];
       }
 // #endif
       if (numTokenComponents == 2)
@@ -228,8 +229,8 @@ DeclarationManager::GetDeclarationInfo(const std::string& tokenStr)
     }
   else
     {
-      VII_LOG(INFO,"Searching for default token declarations : "
-                    << tokenStr.c_str());
+      DLOG(INFO) << "Searching for default token declarations : "
+                 << tokenStr.c_str();
       DIC_ConstIter iter;
       iter = _diContainer.find(tokenStr);
       if (iter != _diContainer.end()) {
@@ -305,7 +306,7 @@ DeclarationManager::DeclarationInfo::StorageType
 DeclarationManager::String2Type(const std::string& typeStr)
 {
   DeclarationInfo::StorageType result = DeclarationInfo::UNKNOWN_TYPE;
-  VII_LOG(INFO,"String2Type typeStr = " << typeStr.c_str());
+  DLOG(INFO) << "String2Type typeStr = " << typeStr.c_str();
   if (typeStr == std::string("float"))
   {
     result = DeclarationInfo::FLOAT;
@@ -329,7 +330,7 @@ DeclarationManager::String2Type(const std::string& typeStr)
   else if (typeStr == std::string("vector"))
   {
     result = DeclarationInfo::VECTOR;
-    VII_LOG(INFO,"String2Type found VECTOR");
+    DLOG(INFO) << "String2Type found VECTOR";
   }
   else if (typeStr == std::string("normal"))
   {
