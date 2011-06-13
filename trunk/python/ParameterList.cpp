@@ -1,8 +1,7 @@
 #include "ParameterList.h"
 
-// Google Logging Framework
+// Google Logging Framework                                                                                                     
 #include <glog/logging.h>
-// #include <vii_logger.h>
 
 // Python version specific handling
 
@@ -63,7 +62,7 @@ bool ParameterList::ProcessParameterList(PyObject* parameterlist)
     return true;
   DLOG(INFO) << "ProcessParameterList";
   if (parameterlist != Py_None) {
-      DLOG(INFO) << "parameterlist is not None";
+    DLOG(INFO) << "parameterlist is not None";
     if (PyDict_Check(parameterlist)) {
       PyObject* pkey;
       PyObject* pvalue;
@@ -101,12 +100,12 @@ bool ParameterList::ProcessParameterList(PyObject* parameterlist)
 #else
         char *keyString = PyString_AsString(pkey);
 #endif // PY_VERSION_HEX >= 0x03000000
-	DLOG(INFO) << "Key item"
-                      << dictIndex
-                      << " is a string object = "
-                      << keyString
-                      << std::endl;
-	_tokenStorage[dictIndex] = keyString;
+        DLOG(INFO) << "Key item "
+                   << dictIndex
+                   << " is a string object = "
+                   << keyString
+                   << std::endl;
+        _tokenStorage[dictIndex] = keyString;
 
         // Display value
         ExtractValue(pvalue, dictIndex, keyString);
@@ -138,7 +137,7 @@ std::ostream& operator <<(std::ostream &os,
 	 << "_tokens[" << i << "] is " << obj._tokens[i]
 	 << std::endl;
     }
-  DLOG(INFO) <<  "DONE";
+  DLOG(INFO) << "DONE";
   return os;
 }
 
@@ -146,14 +145,14 @@ void ParameterList::ExtractValue(PyObject* pvalue,
 				 int dictIndex,
 				 const char* keyString)
 {
-    DLOG(INFO) << "ExtractValue(" << keyString << ") start";
+  DLOG(INFO) << "ExtractValue(" << keyString << ") start";
   if (!PyList_Check(pvalue))
     return;
   // From the token, find out what data type to expect
   DeclarationManager::DeclarationInfo di = _dm.GetDeclarationInfo(keyString);
 
   int numElements = PyList_Size(pvalue);
-  DLOG(INFO) <<  "Num items in pvalue = " << numElements ;
+  DLOG(INFO) << "Num items in pvalue = " << numElements;
 
   // Prepare the correct storage type since we know what to expect
   std::vector<RtFloat> floatPlaceHolder;
