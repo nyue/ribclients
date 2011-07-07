@@ -278,6 +278,8 @@ typedef bool RtBoolean;
 #elif defined(SWIGPYTHON)
 
 typedef long RtFilterFunc;
+typedef long RtProcSubdivFunc;
+typedef long RtProcFreeFunc;
 typedef void* RtArchiveCallback;
 typedef float RtFloat;
 typedef char* RtToken;
@@ -787,13 +789,11 @@ EXTERN void RiBlobbyV ( RtInt nleaf, RtInt ncode, RtInt code[],
 			RtInt nstrings, RtString strings[],
 			RtInt n, RtToken tokens[], RtPointer params[]);
 
-/*
 %rename (Procedural) RiProcedural;
 EXTERN void RiProcedural( RtToken data[],
-			  RtBound bound,
-			  RtProcSubdivFunc subdividefunc,
-			  RtProcFreeFunc freefunc );
-*/
+                          RtBound bound,
+                          RtProcSubdivFunc subdividefunc,
+                          RtProcFreeFunc freefunc );
 
 %rename (Geometry) RiGeometryV;
 EXTERN void RiGeometryV( RtToken type,
