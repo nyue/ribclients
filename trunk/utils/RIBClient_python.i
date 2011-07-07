@@ -203,6 +203,36 @@
   }
 }
 
+%typemap(in) RtProcSubdivFunc
+{
+  if ($input != 0) {
+    int funcValue = (int) PyLong_AsLong($input);
+    switch (funcValue) {
+    case PROCDELAYEDREADARCHIVE:
+      $1 = RiProcDelayedReadArchive;
+      break;
+    case PROCRUNPROGRAM:
+      $1 = RiProcRunProgram;
+      break;
+    case PROCDYNAMICLOAD:
+      $1 = RiProcDynamicLoad;
+      break;
+    }
+  }
+}
+
+%typemap(in) RtProcFreeFunc
+{
+  if ($input != 0) {
+    int funcValue = (int) PyLong_AsLong($input);
+    switch (funcValue) {
+    case PROCFREE:
+      $1 = 0;
+      break;
+    }
+  }
+}
+
 %typemap(in) (RtInt[])
 {
   // Python SWIG typemap for RtInt[]
