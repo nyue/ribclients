@@ -295,6 +295,7 @@ typedef char* RtToken;
 typedef float RtFloat;
 typedef bool RtBoolean;
 typedef int RtInt;
+typedef void* RtArchiveCallback;
 
 #elif defined(SWIGCSHARP)
 %include "RIBClient_csharp.i"

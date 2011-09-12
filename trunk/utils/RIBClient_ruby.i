@@ -105,6 +105,33 @@
   g_params.CleanUpArgStorage();
 }
 
+//=================================================
+// RtArchiveHandle
+%typemap(in) RtArchiveHandle
+{
+  // Ruby RtArchiveHandle processing
+  if (TYPE($input) == T_FIXNUM || TYPE($input) == T_BIGNUM)
+  {
+    int ahID = NUM2INT($input);
+    $1 = g_ahm.Get(ahID);
+  }
+  else
+  {
+    throw std::runtime_error("Integer value expected for archive handle");
+  }
+}
+
+%typemap(ret) RtArchiveHandle
+{
+  // Ruby RtArchiveHandle processing
+  int ahID = g_ahm.Add(result);
+  vresult = ULONG2NUM(ahID);
+
+  // My clean up code for each call returning void
+  g_params.CleanUpArgStorage();
+}
+//=================================================
+
 // RtObjectHandle
 %typemap(in) RtObjectHandle
 {
@@ -128,6 +155,10 @@
 
   // My clean up code for each call returning void
   g_params.CleanUpArgStorage();
+}
+
+%typemap(in) RtArchiveCallback
+{
 }
 
 %typemap(in) RtFilterFunc
