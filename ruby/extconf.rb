@@ -58,8 +58,9 @@ else # Linux and Darwin are classify as poxi platform
   end
   # Linux and Darwin requires different flags
   if (RUBY_PLATFORM.include? "darwin")
-    CONFIG["CC"] = "g++"
-    CONFIG["LDSHARED"].gsub!("cc","g++") # use c++
+    CONFIG["CC"] = "g++ -arch i386"
+    CONFIG["CXX"] = "g++ -arch i386"
+    CONFIG["LDSHARED"].gsub!("cc","g++ -arch i386") # use c++
   else
     CONFIG["CC"] = "g++"
     CONFIG["CXX"] = "g++"
