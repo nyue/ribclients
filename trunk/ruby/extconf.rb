@@ -5,10 +5,10 @@ dir_config('utils')
 have_header('ri.h')
 
 
-puts "NICHOLAS ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ"
-puts CONFIG["CFLAGS"]
-puts CONFIG["LDSHARED"]
-puts "NICHOLAS ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ"
+# puts "NICHOLAS ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ"
+# puts CONFIG["CFLAGS"]
+# puts CONFIG["LDSHARED"]
+# puts "NICHOLAS ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ"
 
 
 if (RUBY_PLATFORM.include? "mswin")
@@ -34,7 +34,7 @@ if (RUBY_PLATFORM.include? "mswin")
     have_library('ri')
     $CFLAGS << ' -DPIXIE_RIBCLIENT' #
   end
-else # Linux and Darwin are classify as poxi platform
+else # Linux and Darwin are classify as posix platform
   have_library('utils')
   if (ENV["USE_PRMAN"])
     # The ordering of this libraries are extremely important, ask PIXAR!
