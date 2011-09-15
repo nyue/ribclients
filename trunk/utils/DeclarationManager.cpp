@@ -311,7 +311,7 @@ DeclarationManager::String2Type(const std::string& typeStr)
   {
     result = DeclarationInfo::FLOAT;
   }
-  else if (typeStr == std::string("int"))
+  else if (typeStr == std::string("integer"))
   {
     result = DeclarationInfo::INTEGER;
   }
