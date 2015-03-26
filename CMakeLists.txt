@@ -44,4 +44,4 @@ ADD_SUBDIRECTORY ( java )
 
 ADD_SUBDIRECTORY ( python )
 
-ADD_SUBDIRECTORY ( ruby )
+# ADD_SUBDIRECTORY ( ruby )
