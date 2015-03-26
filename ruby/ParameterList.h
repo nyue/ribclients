@@ -2,11 +2,11 @@
 #define _IMPPARAMETERLIST_H_
 
 #include "ruby.h"
-#ifdef RUBY_VERSION_POST_180
+//#ifdef RUBY_VERSION_POST_180
 #include "ruby/st.h"
-#else
-#include "st.h"
-#endif //
+//#else
+//#include "st.h"
+//#endif //
 
 /*
   This is required due to a change in Ruby around 1.8.4 where 

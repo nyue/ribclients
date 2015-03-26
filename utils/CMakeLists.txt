@@ -58,7 +58,7 @@ ADD_EXECUTABLE ( boostTest
 
 # TARGET_LINK_LIBRARIES ( unitTest utils log4cxx apr-1 aprutil-1 cppunit ${RIBCLIENT_LIBRARIES} )
 
-TARGET_LINK_LIBRARIES ( boostTest utils ${RIBCLIENT_LIBRARIES} ${Boost_LIBRARIES} glog)
+TARGET_LINK_LIBRARIES ( boostTest utils ${RIBCLIENT_LIBRARIES} ${Boost_LIBRARIES} ${GLOG_glog_LIBRARY} )
 
 # ADD_TEST ( UnitTest unitTest )
 
