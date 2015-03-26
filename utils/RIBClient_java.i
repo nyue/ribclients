@@ -67,6 +67,8 @@
   }
 }
 
+// PRMan does not provide a RiProcFree function
+#if defined(DELIGHT_RIBCLIENT)
 // Procedural Free Function
 %typemap(in) (RtProcFreeFunc)
 {
@@ -88,6 +90,7 @@
     }
   }
 }
+#endif
 
 // Procedural Subdivide Function
 %typemap(in) (RtProcSubdivFunc)
