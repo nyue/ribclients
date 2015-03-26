@@ -260,8 +260,6 @@
 #endif
 
 #if (defined SWIGJAVA)
-%include "RIBClient_java.i"
-
 typedef float RtFloat;
 typedef int RtInt;
 typedef char* RtToken;
@@ -274,6 +272,8 @@ typedef float RtColor[];
 // typedef void* RtObjectHandle;
 // typedef int RtArchiveHandle;
 typedef bool RtBoolean;
+
+%include "RIBClient_java.i"
 
 #elif defined(SWIGPYTHON)
 
