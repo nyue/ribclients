@@ -179,6 +179,7 @@ DeclarationManager::MakeDeclarationInfo(const std::string& typeDeclaration,
   {
     // Nothing found, extract the whole word
     // printf("typeString = %s\n",typeString.c_str());
+	  DLOG(INFO) << "MakeDeclarationInfo : typeString " << typeString;
     di._type = String2Type(typeString);
     di._arraysize = 0; // scalar
   }
@@ -190,6 +191,7 @@ DeclarationManager::MakeDeclarationInfo(const std::string& typeDeclaration,
     std::string typeName = typeString.substr(0,startPosition);
     di._arraysize = atoi(sizeString.c_str());
     // printf("MakeDeclarationInfo %s[%d]\n",typeName.c_str(),di._size);
+    DLOG(INFO) << "MakeDeclarationInfo : typeName " << typeName;
     di._type = String2Type(typeName);
   }
   DLOG(INFO) << "MakeDeclarationInfo : numTokens " << numTokens;
@@ -311,7 +313,7 @@ DeclarationManager::String2Type(const std::string& typeStr)
   {
     result = DeclarationInfo::FLOAT;
   }
-  else if (typeStr == std::string("integer"))
+  else if (typeStr == std::string("int"))
   {
     result = DeclarationInfo::INTEGER;
   }
