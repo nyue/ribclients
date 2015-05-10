@@ -6,7 +6,7 @@ IF (WIN32)
   SET (CMAKE_BUILD_TYPE "Release")
 ENDIF (WIN32)
 
-FIND_PACKAGE( Boost COMPONENTS unit_test_framework )
+FIND_PACKAGE( Boost 1.47 COMPONENTS unit_test_framework )
 
 INCLUDE_DIRECTORIES ( ${Boost_INCLUDE_DIRS} )
 LINK_DIRECTORIES ( ${Boost_LIBRARY_DIRS} )
