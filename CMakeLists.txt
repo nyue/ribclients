@@ -40,7 +40,7 @@ INCLUDE_DIRECTORIES ( ./utils )
 
 ADD_SUBDIRECTORY ( utils )
 
-ADD_SUBDIRECTORY ( java )
+# ADD_SUBDIRECTORY ( java )
 
 ADD_SUBDIRECTORY ( python )
 

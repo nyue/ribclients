@@ -6,6 +6,7 @@ IF (WIN32)
   SET (CMAKE_BUILD_TYPE "Release")
 ENDIF (WIN32)
 
+FIND_PACKAGE ( Threads )
 FIND_PACKAGE( Boost 1.47 COMPONENTS unit_test_framework )
 
 INCLUDE_DIRECTORIES ( ${Boost_INCLUDE_DIRS} )
@@ -50,6 +51,7 @@ ADD_LIBRARY ( utils STATIC
 #   #  ./tests/ViewTransformTestSuite.cpp // Need to migrate code to use IMath
 #   )
 
+
 ADD_EXECUTABLE ( boostTest
   ./tests/BoostTestMain.cpp
   # Note: All the test code are in *.tcc templatize form and include in the
@@ -58,7 +60,13 @@ ADD_EXECUTABLE ( boostTest
 
 # TARGET_LINK_LIBRARIES ( unitTest utils log4cxx apr-1 aprutil-1 cppunit ${RIBCLIENT_LIBRARIES} )
 
-TARGET_LINK_LIBRARIES ( boostTest utils ${RIBCLIENT_LIBRARIES} ${Boost_LIBRARIES} ${GLOG_glog_LIBRARY} )
+TARGET_LINK_LIBRARIES ( boostTest
+  utils
+  ${RIBCLIENT_LIBRARIES}
+  ${Boost_LIBRARIES}
+  ${GLOG_glog_LIBRARY}
+  ${CMAKE_THREAD_LIBS_INIT}
+  )
 
 # ADD_TEST ( UnitTest unitTest )
 
